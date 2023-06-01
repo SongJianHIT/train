@@ -1,23 +1,31 @@
-/**
- * @projectName train
- * @package tech.songjian.train.member.mapper
- * @className tech.songjian.train.member.mapper.MemberMapper
- */
 package tech.songjian.train.member.mapper;
 
-/**
- * MemberMapper
- * @description
- * @author SongJian
- * @date 2023/6/1 18:48
- * @version
- */
+import org.apache.ibatis.annotations.Param;
+import tech.songjian.train.member.domain.Member;
+import tech.songjian.train.member.domain.MemberExample;
+
+import java.util.List;
+
 public interface MemberMapper {
+    long countByExample(MemberExample example);
 
-    /**
-     * 查询表中的行数
-     * @return
-     */
-    int count();
+    int deleteByExample(MemberExample example);
+
+    int deleteByPrimaryKey(Long id);
+
+    int insert(Member record);
+
+    int insertSelective(Member record);
+
+    List<Member> selectByExample(MemberExample example);
+
+    Member selectByPrimaryKey(Long id);
+
+    int updateByExampleSelective(@Param("record") Member record, @Param("example") MemberExample example);
+
+    int updateByExample(@Param("record") Member record, @Param("example") MemberExample example);
+
+    int updateByPrimaryKeySelective(Member record);
+
+    int updateByPrimaryKey(Member record);
 }
-

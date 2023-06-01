@@ -5,7 +5,7 @@
  */
 package tech.songjian.train.member.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import tech.songjian.train.member.mapper.MemberMapper;
 import tech.songjian.train.member.service.MemberService;
@@ -20,16 +20,12 @@ import tech.songjian.train.member.service.MemberService;
 @Service
 public class MemberServiceImpl implements MemberService {
 
-    @Autowired
+    @Resource
     private MemberMapper memberMapper;
 
-    /**
-     * 查询表中的行数
-     * @return
-     */
     @Override
     public int count() {
-        return memberMapper.count();
+        return Math.toIntExact(memberMapper.countByExample(null));
     }
 }
 
