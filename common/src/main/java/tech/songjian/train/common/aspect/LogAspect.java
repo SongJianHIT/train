@@ -1,4 +1,4 @@
-package tech.songjian.train.member.aspect;
+package tech.songjian.train.common.aspect;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.spring.PropertyPreFilters;
