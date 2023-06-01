@@ -8,6 +8,8 @@ package tech.songjian.train.member.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import tech.songjian.train.common.exception.BusinessException;
+import tech.songjian.train.common.exception.BusinessExceptionEnum;
 import tech.songjian.train.member.domain.Member;
 import tech.songjian.train.member.domain.MemberExample;
 import tech.songjian.train.member.mapper.MemberMapper;
@@ -46,8 +48,7 @@ public class MemberServiceImpl implements MemberService {
         memberExample.createCriteria().andMobileEqualTo(mobile);
         List<Member> members = memberMapper.selectByExample(memberExample);
         if (CollUtil.isNotEmpty(members)) {
-            // return members.get(0).getId();
-            throw new RuntimeException("手机号已注册！");
+            throw new BusinessException(BusinessExceptionEnum.MEMBER_MOBILE_EXIST);
         }
         // 不存在则注册新用户
         Member member = new Member();
