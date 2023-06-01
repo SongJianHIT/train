@@ -5,6 +5,7 @@
  */
 package tech.songjian.train.member.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,7 +42,7 @@ public class MemberController {
      * @return
      */
     @PostMapping("/register")
-    public CommonResp register(MemberRegisterReq req) {
+    public CommonResp register(@Valid MemberRegisterReq req) {
         long register = memberService.register(req);
         return new CommonResp<>(register);
     }
