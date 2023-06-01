@@ -5,6 +5,8 @@
  */
 package tech.songjian.train.member.service;
 
+import tech.songjian.train.member.req.MemberRegisterReq;
+
 /**
  * MemberService
  * @description
@@ -24,6 +26,6 @@ public interface MemberService {
      * 会员注册
      * @return
      */
-    public long register(String mobile);
+    public long register(MemberRegisterReq req);
 }
 

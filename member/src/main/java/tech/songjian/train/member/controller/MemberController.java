@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tech.songjian.train.common.resp.CommonResp;
+import tech.songjian.train.member.req.MemberRegisterReq;
 import tech.songjian.train.member.service.MemberService;
 
 /**
@@ -27,18 +29,21 @@ public class MemberController {
     private MemberService memberService;
 
     @GetMapping("/count")
-    public Integer count() {
-        return memberService.count();
+    public CommonResp count() {
+        CommonResp<Integer> integerCommonResp = new CommonResp<>();
+        integerCommonResp.setContent(memberService.count());
+        return integerCommonResp;
     }
 
     /**
      * 会员注册
-     * @param mobile
+     * @param req
      * @return
      */
     @PostMapping("/register")
-    public Long register(String mobile) {
-        return memberService.register(mobile);
+    public CommonResp register(MemberRegisterReq req) {
+        long register = memberService.register(req);
+        return new CommonResp<>(register);
     }
 }
 

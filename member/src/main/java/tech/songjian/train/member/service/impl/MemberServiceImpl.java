@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import tech.songjian.train.member.domain.Member;
 import tech.songjian.train.member.domain.MemberExample;
 import tech.songjian.train.member.mapper.MemberMapper;
+import tech.songjian.train.member.req.MemberRegisterReq;
 import tech.songjian.train.member.service.MemberService;
 
 import java.util.List;
@@ -38,7 +39,8 @@ public class MemberServiceImpl implements MemberService {
      * @return
      */
     @Override
-    public long register(String mobile) {
+    public long register(MemberRegisterReq req) {
+        String mobile = req.getMobile();
         // 先查询该手机号是否存在
         MemberExample memberExample = new MemberExample();
         memberExample.createCriteria().andMobileEqualTo(mobile);
@@ -47,6 +49,7 @@ public class MemberServiceImpl implements MemberService {
             // return members.get(0).getId();
             throw new RuntimeException("手机号已注册！");
         }
+        // 不存在则注册新用户
         Member member = new Member();
         member.setId(System.currentTimeMillis());
         member.setMobile(mobile);
