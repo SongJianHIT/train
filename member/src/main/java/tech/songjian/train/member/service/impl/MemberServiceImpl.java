@@ -10,6 +10,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import tech.songjian.train.common.exception.BusinessException;
 import tech.songjian.train.common.exception.BusinessExceptionEnum;
+import tech.songjian.train.common.util.SnowUtil;
 import tech.songjian.train.member.domain.Member;
 import tech.songjian.train.member.domain.MemberExample;
 import tech.songjian.train.member.mapper.MemberMapper;
@@ -52,7 +53,8 @@ public class MemberServiceImpl implements MemberService {
         }
         // 不存在则注册新用户
         Member member = new Member();
-        member.setId(System.currentTimeMillis());
+        // 雪花算法生成id
+        member.setId(SnowUtil.getSnowflakeNextId());
         member.setMobile(mobile);
         memberMapper.insert(member);
         return member.getId();
