@@ -7,6 +7,7 @@ package tech.songjian.train.member.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tech.songjian.train.member.service.MemberService;
@@ -28,6 +29,16 @@ public class MemberController {
     @GetMapping("/count")
     public Integer count() {
         return memberService.count();
+    }
+
+    /**
+     * 会员注册
+     * @param mobile
+     * @return
+     */
+    @PostMapping("/register")
+    public Long register(String mobile) {
+        return memberService.register(mobile);
     }
 }
 

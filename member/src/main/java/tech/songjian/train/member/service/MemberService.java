@@ -19,5 +19,11 @@ public interface MemberService {
      * @return
      */
     public int count();
+
+    /**
+     * 会员注册
+     * @return
+     */
+    public long register(String mobile);
 }
 
