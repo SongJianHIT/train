@@ -30,4 +30,10 @@ public interface PassengerService {
      * @param req
      */
     public PageResp<PassengerQueryResp> queryList(PassengerQueryReq req);
+
+    /**
+     * 根据id删除
+     * @param id
+     */
+    public void delete(Long id);
 }

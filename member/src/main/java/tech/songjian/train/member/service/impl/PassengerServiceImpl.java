@@ -97,5 +97,14 @@ public class PassengerServiceImpl implements PassengerService {
         page.setList(list);
         return page;
     }
+
+    /**
+     * 根据id删除
+     * @param id
+     */
+    @Override
+    public void delete(Long id) {
+        passengerMapper.deleteByPrimaryKey(id);
+    }
 }
 

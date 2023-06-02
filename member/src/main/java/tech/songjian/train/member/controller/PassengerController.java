@@ -53,5 +53,16 @@ public class PassengerController {
         PageResp<PassengerQueryResp> page = passengerService.queryList(req);
         return new CommonResp<>(page);
     }
+
+    /**
+     * 按照id删除乘客
+     * @param req
+     * @return
+     */
+    @DeleteMapping("/delete/{id}")
+    public CommonResp delete(@PathVariable Long id) {
+        passengerService.delete(id);
+        return new CommonResp<>();
+    }
 }
 
