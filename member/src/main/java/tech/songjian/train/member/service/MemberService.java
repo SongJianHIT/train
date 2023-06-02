@@ -5,8 +5,10 @@
  */
 package tech.songjian.train.member.service;
 
+import tech.songjian.train.member.req.MemberLoginReq;
 import tech.songjian.train.member.req.MemberRegisterReq;
 import tech.songjian.train.member.req.MemberSendCodeReq;
+import tech.songjian.train.member.resp.MemberLoginResp;
 
 /**
  * MemberService
@@ -35,5 +37,12 @@ public interface MemberService {
      * @return
      */
     public void sendCode(MemberSendCodeReq req);
+
+    /**
+     * 会员登入
+     * @param req
+     * @return
+     */
+    public MemberLoginResp login(MemberLoginReq req);
 }
 

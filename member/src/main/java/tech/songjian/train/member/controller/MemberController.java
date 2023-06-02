@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tech.songjian.train.common.resp.CommonResp;
+import tech.songjian.train.member.req.MemberLoginReq;
 import tech.songjian.train.member.req.MemberRegisterReq;
 import tech.songjian.train.member.req.MemberSendCodeReq;
+import tech.songjian.train.member.resp.MemberLoginResp;
 import tech.songjian.train.member.service.MemberService;
 
 /**
@@ -57,6 +59,17 @@ public class MemberController {
     public CommonResp sendCode(@Valid MemberSendCodeReq req) {
         memberService.sendCode(req);
         return new CommonResp<>();
+    }
+
+    /**
+     * 会员登入
+     * @param req
+     * @return
+     */
+    @PostMapping("/login")
+    public CommonResp login(@Valid MemberLoginReq req) {
+        MemberLoginResp login = memberService.login(req);
+        return new CommonResp<>(login);
     }
 }
 
