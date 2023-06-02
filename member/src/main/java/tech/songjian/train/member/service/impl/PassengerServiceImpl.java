@@ -5,16 +5,23 @@
  */
 package tech.songjian.train.member.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import tech.songjian.train.common.context.LoginMemberContext;
 import tech.songjian.train.common.util.SnowUtil;
 import tech.songjian.train.member.domain.Passenger;
+import tech.songjian.train.member.domain.PassengerExample;
 import tech.songjian.train.member.mapper.PassengerMapper;
+import tech.songjian.train.member.req.PassengerQueryReq;
 import tech.songjian.train.member.req.PassengerSaveReq;
+import tech.songjian.train.member.resp.PassengerQueryResp;
 import tech.songjian.train.member.service.PassengerService;
+
+import java.util.List;
 
 /**
  * PassengerServiceImpl
@@ -44,6 +51,25 @@ public class PassengerServiceImpl implements PassengerService {
         passenger.setCreateTime(now);
         passenger.setUpdateTime(now);
         passengerMapper.insert(passenger);
+    }
+
+
+    /**
+     * 根据会员id查询乘客列表
+     * @param req
+     */
+    @Override
+    public List<PassengerQueryResp> queryList(PassengerQueryReq req) {
+        // 创建查询条件
+        PassengerExample passengerExample = new PassengerExample();
+        PassengerExample.Criteria criteria = passengerExample.createCriteria();
+        if (ObjectUtil.isNotNull(req.getMemberId())) {
+            criteria.andMemberIdEqualTo(req.getMemberId());
+        }
+        List<Passenger> passengers = passengerMapper.selectByExample(passengerExample);
+        // 封装返回结果
+        List<PassengerQueryResp> passengerQueryResp = BeanUtil.copyToList(passengers, PassengerQueryResp.class);
+        return passengerQueryResp;
     }
 }
 

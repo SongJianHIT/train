@@ -7,13 +7,15 @@ package tech.songjian.train.member.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import tech.songjian.train.common.context.LoginMemberContext;
 import tech.songjian.train.common.resp.CommonResp;
+import tech.songjian.train.member.req.PassengerQueryReq;
 import tech.songjian.train.member.req.PassengerSaveReq;
+import tech.songjian.train.member.resp.PassengerQueryResp;
 import tech.songjian.train.member.service.PassengerService;
+
+import java.util.List;
 
 /**
  * PassengerController
@@ -38,6 +40,19 @@ public class PassengerController {
     public CommonResp login(@Valid @RequestBody PassengerSaveReq req) {
         passengerService.save(req);
         return new CommonResp<>();
+    }
+
+    /**
+     * 根据会员id查询乘客列表
+     * @param req
+     * @return
+     */
+    @GetMapping("/query-list")
+    public CommonResp queryList(@Valid @RequestBody PassengerQueryReq req) {
+        // 从线程本地变量中获取 会员id
+        req.setMemberId(LoginMemberContext.getId());
+        List<PassengerQueryResp> passengerQueryResps = passengerService.queryList(req);
+        return new CommonResp<>(passengerQueryResps);
     }
 }
 
