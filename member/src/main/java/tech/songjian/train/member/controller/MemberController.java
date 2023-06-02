@@ -16,7 +16,7 @@ import tech.songjian.train.member.resp.MemberLoginResp;
 import tech.songjian.train.member.service.MemberService;
 
 /**
- * TestController
+ * MemberController
  * @description 测试
  * @author SongJian
  * @date 2023/6/1 10:57
