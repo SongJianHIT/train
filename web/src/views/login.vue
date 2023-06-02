@@ -50,7 +50,7 @@ export default defineComponent({
     const router = useRouter();
 
     const loginForm = reactive({
-      mobile: '13600000000',
+      mobile: '13000000000',
       code: '',
     });
 
@@ -74,7 +74,7 @@ export default defineComponent({
         if (data.success) {
           notification.success({ description: '登录成功！' });
           // 登录成功，跳到控台主页
-          router.push("/welcome");
+          router.push("/");
           store.commit("setMember", data.content);
         } else {
           notification.error({ description: data.message });
