@@ -10,12 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tech.songjian.train.common.context.LoginMemberContext;
 import tech.songjian.train.common.resp.CommonResp;
+import tech.songjian.train.common.resp.PageResp;
 import tech.songjian.train.member.req.PassengerQueryReq;
 import tech.songjian.train.member.req.PassengerSaveReq;
 import tech.songjian.train.member.resp.PassengerQueryResp;
 import tech.songjian.train.member.service.PassengerService;
-
-import java.util.List;
 
 /**
  * PassengerController
@@ -51,8 +50,8 @@ public class PassengerController {
     public CommonResp queryList(@Valid PassengerQueryReq req) {
         // 从线程本地变量中获取 会员id
         req.setMemberId(LoginMemberContext.getId());
-        List<PassengerQueryResp> passengerQueryResps = passengerService.queryList(req);
-        return new CommonResp<>(passengerQueryResps);
+        PageResp<PassengerQueryResp> page = passengerService.queryList(req);
+        return new CommonResp<>(page);
     }
 }
 

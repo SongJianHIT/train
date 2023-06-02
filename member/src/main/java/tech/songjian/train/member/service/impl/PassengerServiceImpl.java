@@ -9,10 +9,14 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import tech.songjian.train.common.context.LoginMemberContext;
+import tech.songjian.train.common.resp.PageResp;
 import tech.songjian.train.common.util.SnowUtil;
 import tech.songjian.train.member.domain.Passenger;
 import tech.songjian.train.member.domain.PassengerExample;
@@ -33,6 +37,8 @@ import java.util.List;
  */
 @Service
 public class PassengerServiceImpl implements PassengerService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(PassengerService.class);
 
     @Resource
     private PassengerMapper passengerMapper;
@@ -60,7 +66,7 @@ public class PassengerServiceImpl implements PassengerService {
      * @param req
      */
     @Override
-    public List<PassengerQueryResp> queryList(PassengerQueryReq req) {
+    public PageResp<PassengerQueryResp> queryList(PassengerQueryReq req) {
         // 创建查询条件
         PassengerExample passengerExample = new PassengerExample();
         PassengerExample.Criteria criteria = passengerExample.createCriteria();
@@ -71,9 +77,18 @@ public class PassengerServiceImpl implements PassengerService {
         // 会对这句往下遇到的第一个 sql 做拦截，添加 limit 进行分页
         PageHelper.startPage(req.getPage(), req.getSize());
         List<Passenger> passengers = passengerMapper.selectByExample(passengerExample);
+
+        // 获取总条数
+        PageInfo<Passenger> pageInfo = new PageInfo<>(passengers);
+        LOG.info("总行数：{}", pageInfo.getTotal());
+        LOG.info("总页数：{}", pageInfo.getPages());
+        List<PassengerQueryResp> list = BeanUtil.copyToList(passengers, PassengerQueryResp.class);
+
         // 封装返回结果
-        List<PassengerQueryResp> passengerQueryResp = BeanUtil.copyToList(passengers, PassengerQueryResp.class);
-        return passengerQueryResp;
+        PageResp<PassengerQueryResp> page = new PageResp<>();
+        page.setTotal(pageInfo.getTotal());
+        page.setList(list);
+        return page;
     }
 }
 

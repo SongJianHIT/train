@@ -5,11 +5,10 @@
  */
 package tech.songjian.train.member.service;
 
+import tech.songjian.train.common.resp.PageResp;
 import tech.songjian.train.member.req.PassengerQueryReq;
 import tech.songjian.train.member.req.PassengerSaveReq;
 import tech.songjian.train.member.resp.PassengerQueryResp;
-
-import java.util.List;
 
 /**
  * PassengerService
@@ -30,5 +29,5 @@ public interface PassengerService {
      * 根据会员id查询其乘客列表
      * @param req
      */
-    public List<PassengerQueryResp> queryList(PassengerQueryReq req);
+    public PageResp<PassengerQueryResp> queryList(PassengerQueryReq req);
 }
