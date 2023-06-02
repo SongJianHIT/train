@@ -6,6 +6,7 @@
 package tech.songjian.train.member.service;
 
 import tech.songjian.train.member.req.MemberRegisterReq;
+import tech.songjian.train.member.req.MemberSendCodeReq;
 
 /**
  * MemberService
@@ -27,5 +28,12 @@ public interface MemberService {
      * @return
      */
     public long register(MemberRegisterReq req);
+
+    /**
+     * 发送短信验证码
+     * @param req
+     * @return
+     */
+    public void sendCode(MemberSendCodeReq req);
 }
 

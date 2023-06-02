@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tech.songjian.train.common.resp.CommonResp;
 import tech.songjian.train.member.req.MemberRegisterReq;
+import tech.songjian.train.member.req.MemberSendCodeReq;
 import tech.songjian.train.member.service.MemberService;
 
 /**
@@ -45,6 +46,17 @@ public class MemberController {
     public CommonResp register(@Valid MemberRegisterReq req) {
         long register = memberService.register(req);
         return new CommonResp<>(register);
+    }
+
+    /**
+     * 发送短信验证码
+     * @param req
+     * @return
+     */
+    @PostMapping("/send-code")
+    public CommonResp sendCode(@Valid MemberSendCodeReq req) {
+        memberService.sendCode(req);
+        return new CommonResp<>();
     }
 }
 
