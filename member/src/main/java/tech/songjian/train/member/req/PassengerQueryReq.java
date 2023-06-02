@@ -1,8 +1,8 @@
 package tech.songjian.train.member.req;
 
-import tech.songjian.train.common.resp.PageResp;
+import tech.songjian.train.common.req.PageReq;
 
-public class PassengerQueryReq extends PageResp {
+public class PassengerQueryReq extends PageReq {
 
     private Long memberId;
 

@@ -48,7 +48,7 @@ public class PassengerController {
      * @return
      */
     @GetMapping("/query-list")
-    public CommonResp queryList(@Valid @RequestBody PassengerQueryReq req) {
+    public CommonResp queryList(@Valid PassengerQueryReq req) {
         // 从线程本地变量中获取 会员id
         req.setMemberId(LoginMemberContext.getId());
         List<PassengerQueryResp> passengerQueryResps = passengerService.queryList(req);

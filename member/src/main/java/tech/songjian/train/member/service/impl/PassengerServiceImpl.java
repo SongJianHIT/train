@@ -8,6 +8,7 @@ package tech.songjian.train.member.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
+import com.github.pagehelper.PageHelper;
 import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -66,6 +67,9 @@ public class PassengerServiceImpl implements PassengerService {
         if (ObjectUtil.isNotNull(req.getMemberId())) {
             criteria.andMemberIdEqualTo(req.getMemberId());
         }
+        // 在 sql 前开启分页即可！
+        // 会对这句往下遇到的第一个 sql 做拦截，添加 limit 进行分页
+        PageHelper.startPage(req.getPage(), req.getSize());
         List<Passenger> passengers = passengerMapper.selectByExample(passengerExample);
         // 封装返回结果
         List<PassengerQueryResp> passengerQueryResp = BeanUtil.copyToList(passengers, PassengerQueryResp.class);
