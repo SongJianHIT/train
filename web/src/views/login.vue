@@ -1,7 +1,7 @@
 <template>
   <a-row class="login">
     <a-col :span="8" :offset="8" class="login-main">
-      <h1 style="text-align: center"><rocket-two-tone />&nbsp;甲蛙12306售票系统</h1>
+      <h1 style="text-align: center"><rocket-two-tone />&nbsp;乐购票12306售票系统</h1>
       <a-form
           :model="loginForm"
           name="basic"
@@ -50,12 +50,12 @@ export default defineComponent({
     const router = useRouter();
 
     const loginForm = reactive({
-      mobile: '13000000000',
+      mobile: '13600000000',
       code: '',
     });
 
     const sendCode = () => {
-      axios.post("/member/member/send-code", {
+      axios.post("http://localhost:8000/member/member/send-code", {
         mobile: loginForm.mobile
       }).then(response => {
         let data = response.data;

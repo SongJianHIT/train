@@ -7,10 +7,7 @@ package tech.songjian.train.member.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tech.songjian.train.common.resp.CommonResp;
 import tech.songjian.train.member.req.MemberLoginReq;
 import tech.songjian.train.member.req.MemberRegisterReq;
@@ -56,7 +53,7 @@ public class MemberController {
      * @return
      */
     @PostMapping("/send-code")
-    public CommonResp sendCode(@Valid MemberSendCodeReq req) {
+    public CommonResp sendCode(@Valid @RequestBody MemberSendCodeReq req) {
         memberService.sendCode(req);
         return new CommonResp<>();
     }
@@ -67,7 +64,7 @@ public class MemberController {
      * @return
      */
     @PostMapping("/login")
-    public CommonResp login(@Valid MemberLoginReq req) {
+    public CommonResp login(@Valid @RequestBody MemberLoginReq req) {
         MemberLoginResp login = memberService.login(req);
         return new CommonResp<>(login);
     }
