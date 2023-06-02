@@ -18,10 +18,17 @@ public class JwtUtil {
     /**
      * 盐值很重要，不能泄漏，且每个项目都应该不一样，可以放到配置文件中
      */
-    private static final String key = "Jiawa12306";
+    private static final String key = "12306";
 
+    /**
+     * 生成token
+     * @param id
+     * @param mobile
+     * @return
+     */
     public static String createToken(Long id, String mobile) {
         DateTime now = DateTime.now();
+        // 过期时间设置 24 小时
         DateTime expTime = now.offsetNew(DateField.HOUR, 24);
         Map<String, Object> payload = new HashMap<>();
         // 签发时间
@@ -38,6 +45,11 @@ public class JwtUtil {
         return token;
     }
 
+    /**
+     * 校验token
+     * @param token
+     * @return
+     */
     public static boolean validate(String token) {
         JWT jwt = JWTUtil.parseToken(token).setKey(key.getBytes());
         // validate包含了verify
@@ -57,9 +69,9 @@ public class JwtUtil {
     }
 
     public static void main(String[] args) {
-        createToken(1L, "123");
+        createToken(1L, "12306");
 
-        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE2NzY4OTk4MjcsIm1vYmlsZSI6IjEyMyIsImlkIjoxLCJleHAiOjE2NzY4OTk4MzcsImlhdCI6MTY3Njg5OTgyN30.JbFfdeNHhxKhAeag63kifw9pgYhnNXISJM5bL6hM8eU";
+        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE2ODU2OTIzMDAsIm1vYmlsZSI6IjEyMzA2IiwiaWQiOjEsImV4cCI6MTY4NTc3ODcwMCwiaWF0IjoxNjg1NjkyMzAwfQ.idQ-SAiBvMUCteDzYhuYBVKo1UbE0t2Oatn-fyN8Q34";
         validate(token);
 
         getJSONObject(token);

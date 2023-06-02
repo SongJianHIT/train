@@ -13,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import tech.songjian.train.common.exception.BusinessException;
 import tech.songjian.train.common.exception.BusinessExceptionEnum;
+import tech.songjian.train.common.util.JwtUtil;
 import tech.songjian.train.common.util.SnowUtil;
 import tech.songjian.train.member.domain.Member;
 import tech.songjian.train.member.domain.MemberExample;
@@ -107,6 +108,9 @@ public class MemberServiceImpl implements MemberService {
         // 构造返回对象
         MemberLoginResp memberLoginResp = new MemberLoginResp();
         BeanUtils.copyProperties(memberDB, memberLoginResp);
+        // 设置 JWT token
+        String token = JwtUtil.createToken(memberLoginResp.getId(), memberLoginResp.getMobile());
+        memberLoginResp.setToken(token);
         return memberLoginResp;
     }
 
