@@ -44,20 +44,27 @@ public class PassengerServiceImpl implements PassengerService {
     private PassengerMapper passengerMapper;
 
     /**
-     * 新增乘客
+     * 新增乘客，编辑乘客
      * @param req
      */
     @Override
     public void save(PassengerSaveReq req) {
         DateTime now = DateTime.now();
         Passenger passenger = new Passenger();
+        // 如果没有id，则是新增保存
         BeanUtils.copyProperties(req, passenger);
-        // 重点：从 ThreadLocal 中获取当前登入的会员
-        passenger.setMemberId(LoginMemberContext.getId());
-        passenger.setId(SnowUtil.getSnowflakeNextId());
-        passenger.setCreateTime(now);
-        passenger.setUpdateTime(now);
-        passengerMapper.insert(passenger);
+        if (ObjectUtil.isNull(passenger.getId())) {
+            // 重点：从 ThreadLocal 中获取当前登入的会员
+            passenger.setMemberId(LoginMemberContext.getId());
+            passenger.setId(SnowUtil.getSnowflakeNextId());
+            passenger.setCreateTime(now);
+            passenger.setUpdateTime(now);
+            passengerMapper.insert(passenger);
+        } else {
+            // 否则，是修改保存
+            passenger.setUpdateTime(now);
+            passengerMapper.updateByPrimaryKey(passenger);
+        }
     }
 
 
