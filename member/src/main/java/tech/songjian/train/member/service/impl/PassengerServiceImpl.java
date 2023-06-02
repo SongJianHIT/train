@@ -9,6 +9,7 @@ import cn.hutool.core.date.DateTime;
 import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import tech.songjian.train.common.context.LoginMemberContext;
 import tech.songjian.train.common.util.SnowUtil;
 import tech.songjian.train.member.domain.Passenger;
 import tech.songjian.train.member.mapper.PassengerMapper;
@@ -37,6 +38,8 @@ public class PassengerServiceImpl implements PassengerService {
         DateTime now = DateTime.now();
         Passenger passenger = new Passenger();
         BeanUtils.copyProperties(req, passenger);
+        // 重点：从 ThreadLocal 中获取当前登入的会员
+        passenger.setMemberId(LoginMemberContext.getId());
         passenger.setId(SnowUtil.getSnowflakeNextId());
         passenger.setCreateTime(now);
         passenger.setUpdateTime(now);
