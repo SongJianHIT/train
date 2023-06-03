@@ -42,12 +42,21 @@ public class TrainAdminController {
         return new CommonResp<>();
     }
 
+    /**
+     * 查询所有车次
+     * @return
+     */
     @GetMapping("/query-all")
     public CommonResp<List<TrainQueryResp>> queryList() {
         List<TrainQueryResp> list = trainService.queryAll();
         return new CommonResp<>(list);
     }
 
+    /**
+     * 根据车次 id 自动生成座位信息
+     * @param trainCode
+     * @return
+     */
     @GetMapping("/gen-seat/{trainCode}")
     public CommonResp<Object> genSeat(@PathVariable String trainCode) {
         trainSeatService.genTrainSeat(trainCode);
