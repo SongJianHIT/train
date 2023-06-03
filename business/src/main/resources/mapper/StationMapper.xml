@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jiawa.train.business.mapper.StationMapper">
-  <resultMap id="BaseResultMap" type="com.jiawa.train.business.domain.Station">
+<mapper namespace="tech.songjian.train.business.mapper.StationMapper">
+  <resultMap id="BaseResultMap" type="tech.songjian.train.business.domain.Station">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="name_pinyin" jdbcType="VARCHAR" property="namePinyin" />
@@ -70,7 +70,7 @@
   <sql id="Base_Column_List">
     id, `name`, name_pinyin, name_py, create_time, update_time
   </sql>
-  <select id="selectByExample" parameterType="com.jiawa.train.business.domain.StationExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="tech.songjian.train.business.domain.StationExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -85,7 +85,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from station
     where id = #{id,jdbcType=BIGINT}
@@ -94,21 +94,21 @@
     delete from station
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.jiawa.train.business.domain.StationExample">
+  <delete id="deleteByExample" parameterType="tech.songjian.train.business.domain.StationExample">
     delete from station
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.jiawa.train.business.domain.Station">
-    insert into station (id, `name`, name_pinyin, 
+  <insert id="insert" parameterType="tech.songjian.train.business.domain.Station">
+    insert into station (id, `name`, name_pinyin,
       name_py, create_time, update_time
       )
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{namePinyin,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{namePinyin,jdbcType=VARCHAR},
       #{namePy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.jiawa.train.business.domain.Station">
+  <insert id="insertSelective" parameterType="tech.songjian.train.business.domain.Station">
     insert into station
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -151,7 +151,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.jiawa.train.business.domain.StationExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="tech.songjian.train.business.domain.StationExample" resultType="java.lang.Long">
     select count(*) from station
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -195,7 +195,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.jiawa.train.business.domain.Station">
+  <update id="updateByPrimaryKeySelective" parameterType="tech.songjian.train.business.domain.Station">
     update station
     <set>
       <if test="name != null">
@@ -216,7 +216,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.jiawa.train.business.domain.Station">
+  <update id="updateByPrimaryKey" parameterType="tech.songjian.train.business.domain.Station">
     update station
     set `name` = #{name,jdbcType=VARCHAR},
       name_pinyin = #{namePinyin,jdbcType=VARCHAR},

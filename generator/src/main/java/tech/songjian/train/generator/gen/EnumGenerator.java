@@ -2,10 +2,10 @@
 //
 //
 //import cn.hutool.core.util.StrUtil;
-//import com.jiawa.train.business.enums.ConfirmOrderStatusEnum;
-//import com.jiawa.train.business.enums.SeatColEnum;
-//import com.jiawa.train.business.enums.SeatTypeEnum;
-//import com.jiawa.train.business.enums.TrainTypeEnum;
+//import tech.songjian.train.business.enums.ConfirmOrderStatusEnum;
+//import tech.songjian.train.business.enums.SeatColEnum;
+//import tech.songjian.train.business.enums.SeatTypeEnum;
+//import tech.songjian.train.business.enums.TrainTypeEnum;
 //import tech.songjian.train.member.enums.PassengerTypeEnum;
 //
 //import java.io.FileOutputStream;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jiawa.train.business.mapper.TrainMapper">
-  <resultMap id="BaseResultMap" type="com.jiawa.train.business.domain.Train">
+<mapper namespace="tech.songjian.train.business.mapper.TrainMapper">
+  <resultMap id="BaseResultMap" type="tech.songjian.train.business.domain.Train">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="type" jdbcType="CHAR" property="type" />
@@ -73,10 +73,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, code, `type`, `start`, start_pinyin, start_time, `end`, end_pinyin, end_time, 
+    id, code, `type`, `start`, start_pinyin, start_time, `end`, end_pinyin, end_time,
     create_time, update_time
   </sql>
-  <select id="selectByExample" parameterType="com.jiawa.train.business.domain.TrainExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="tech.songjian.train.business.domain.TrainExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -91,7 +91,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from train
     where id = #{id,jdbcType=BIGINT}
@@ -100,23 +100,23 @@
     delete from train
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.jiawa.train.business.domain.TrainExample">
+  <delete id="deleteByExample" parameterType="tech.songjian.train.business.domain.TrainExample">
     delete from train
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.jiawa.train.business.domain.Train">
-    insert into train (id, code, `type`, `start`, 
-      start_pinyin, start_time, `end`, 
-      end_pinyin, end_time, create_time, 
+  <insert id="insert" parameterType="tech.songjian.train.business.domain.Train">
+    insert into train (id, code, `type`, `start`,
+      start_pinyin, start_time, `end`,
+      end_pinyin, end_time, create_time,
       update_time)
-    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, #{start,jdbcType=VARCHAR}, 
-      #{startPinyin,jdbcType=VARCHAR}, #{startTime,jdbcType=TIME}, #{end,jdbcType=VARCHAR}, 
-      #{endPinyin,jdbcType=VARCHAR}, #{endTime,jdbcType=TIME}, #{createTime,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, #{start,jdbcType=VARCHAR},
+      #{startPinyin,jdbcType=VARCHAR}, #{startTime,jdbcType=TIME}, #{end,jdbcType=VARCHAR},
+      #{endPinyin,jdbcType=VARCHAR}, #{endTime,jdbcType=TIME}, #{createTime,jdbcType=TIMESTAMP},
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.jiawa.train.business.domain.Train">
+  <insert id="insertSelective" parameterType="tech.songjian.train.business.domain.Train">
     insert into train
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -189,7 +189,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.jiawa.train.business.domain.TrainExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="tech.songjian.train.business.domain.TrainExample" resultType="java.lang.Long">
     select count(*) from train
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -253,7 +253,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.jiawa.train.business.domain.Train">
+  <update id="updateByPrimaryKeySelective" parameterType="tech.songjian.train.business.domain.Train">
     update train
     <set>
       <if test="code != null">
@@ -289,7 +289,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.jiawa.train.business.domain.Train">
+  <update id="updateByPrimaryKey" parameterType="tech.songjian.train.business.domain.Train">
     update train
     set code = #{code,jdbcType=VARCHAR},
       `type` = #{type,jdbcType=CHAR},

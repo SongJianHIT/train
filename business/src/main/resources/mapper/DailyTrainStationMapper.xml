@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jiawa.train.business.mapper.DailyTrainStationMapper">
-  <resultMap id="BaseResultMap" type="com.jiawa.train.business.domain.DailyTrainStation">
+<mapper namespace="tech.songjian.train.business.mapper.DailyTrainStationMapper">
+  <resultMap id="BaseResultMap" type="tech.songjian.train.business.domain.DailyTrainStation">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="date" jdbcType="DATE" property="date" />
     <result column="train_code" jdbcType="VARCHAR" property="trainCode" />
@@ -74,10 +74,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `date`, train_code, `index`, `name`, name_pinyin, in_time, out_time, stop_time, 
+    id, `date`, train_code, `index`, `name`, name_pinyin, in_time, out_time, stop_time,
     km, create_time, update_time
   </sql>
-  <select id="selectByExample" parameterType="com.jiawa.train.business.domain.DailyTrainStationExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="tech.songjian.train.business.domain.DailyTrainStationExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -92,7 +92,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from daily_train_station
     where id = #{id,jdbcType=BIGINT}
@@ -101,23 +101,23 @@
     delete from daily_train_station
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.jiawa.train.business.domain.DailyTrainStationExample">
+  <delete id="deleteByExample" parameterType="tech.songjian.train.business.domain.DailyTrainStationExample">
     delete from daily_train_station
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.jiawa.train.business.domain.DailyTrainStation">
-    insert into daily_train_station (id, `date`, train_code, 
-      `index`, `name`, name_pinyin, 
-      in_time, out_time, stop_time, km, 
+  <insert id="insert" parameterType="tech.songjian.train.business.domain.DailyTrainStation">
+    insert into daily_train_station (id, `date`, train_code,
+      `index`, `name`, name_pinyin,
+      in_time, out_time, stop_time, km,
       create_time, update_time)
-    values (#{id,jdbcType=BIGINT}, #{date,jdbcType=DATE}, #{trainCode,jdbcType=VARCHAR}, 
-      #{index,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{namePinyin,jdbcType=VARCHAR}, 
-      #{inTime,jdbcType=TIME}, #{outTime,jdbcType=TIME}, #{stopTime,jdbcType=TIME}, #{km,jdbcType=DECIMAL}, 
+    values (#{id,jdbcType=BIGINT}, #{date,jdbcType=DATE}, #{trainCode,jdbcType=VARCHAR},
+      #{index,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{namePinyin,jdbcType=VARCHAR},
+      #{inTime,jdbcType=TIME}, #{outTime,jdbcType=TIME}, #{stopTime,jdbcType=TIME}, #{km,jdbcType=DECIMAL},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.jiawa.train.business.domain.DailyTrainStation">
+  <insert id="insertSelective" parameterType="tech.songjian.train.business.domain.DailyTrainStation">
     insert into daily_train_station
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -196,7 +196,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.jiawa.train.business.domain.DailyTrainStationExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="tech.songjian.train.business.domain.DailyTrainStationExample" resultType="java.lang.Long">
     select count(*) from daily_train_station
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -264,7 +264,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.jiawa.train.business.domain.DailyTrainStation">
+  <update id="updateByPrimaryKeySelective" parameterType="tech.songjian.train.business.domain.DailyTrainStation">
     update daily_train_station
     <set>
       <if test="date != null">
@@ -303,7 +303,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.jiawa.train.business.domain.DailyTrainStation">
+  <update id="updateByPrimaryKey" parameterType="tech.songjian.train.business.domain.DailyTrainStation">
     update daily_train_station
     set `date` = #{date,jdbcType=DATE},
       train_code = #{trainCode,jdbcType=VARCHAR},

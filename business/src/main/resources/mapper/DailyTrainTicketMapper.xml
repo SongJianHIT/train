@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jiawa.train.business.mapper.DailyTrainTicketMapper">
-  <resultMap id="BaseResultMap" type="com.jiawa.train.business.domain.DailyTrainTicket">
+<mapper namespace="tech.songjian.train.business.mapper.DailyTrainTicketMapper">
+  <resultMap id="BaseResultMap" type="tech.songjian.train.business.domain.DailyTrainTicket">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="date" jdbcType="DATE" property="date" />
     <result column="train_code" jdbcType="VARCHAR" property="trainCode" />
@@ -83,11 +83,11 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `date`, train_code, `start`, start_pinyin, start_time, start_index, `end`, end_pinyin, 
-    end_time, end_index, ydz, ydz_price, edz, edz_price, rw, rw_price, yw, yw_price, 
+    id, `date`, train_code, `start`, start_pinyin, start_time, start_index, `end`, end_pinyin,
+    end_time, end_index, ydz, ydz_price, edz, edz_price, rw, rw_price, yw, yw_price,
     create_time, update_time
   </sql>
-  <select id="selectByExample" parameterType="com.jiawa.train.business.domain.DailyTrainTicketExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="tech.songjian.train.business.domain.DailyTrainTicketExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -102,7 +102,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from daily_train_ticket
     where id = #{id,jdbcType=BIGINT}
@@ -111,29 +111,29 @@
     delete from daily_train_ticket
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.jiawa.train.business.domain.DailyTrainTicketExample">
+  <delete id="deleteByExample" parameterType="tech.songjian.train.business.domain.DailyTrainTicketExample">
     delete from daily_train_ticket
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.jiawa.train.business.domain.DailyTrainTicket">
-    insert into daily_train_ticket (id, `date`, train_code, 
-      `start`, start_pinyin, start_time, 
-      start_index, `end`, end_pinyin, 
-      end_time, end_index, ydz, 
-      ydz_price, edz, edz_price, 
-      rw, rw_price, yw, yw_price, 
+  <insert id="insert" parameterType="tech.songjian.train.business.domain.DailyTrainTicket">
+    insert into daily_train_ticket (id, `date`, train_code,
+      `start`, start_pinyin, start_time,
+      start_index, `end`, end_pinyin,
+      end_time, end_index, ydz,
+      ydz_price, edz, edz_price,
+      rw, rw_price, yw, yw_price,
       create_time, update_time)
-    values (#{id,jdbcType=BIGINT}, #{date,jdbcType=DATE}, #{trainCode,jdbcType=VARCHAR}, 
-      #{start,jdbcType=VARCHAR}, #{startPinyin,jdbcType=VARCHAR}, #{startTime,jdbcType=TIME}, 
-      #{startIndex,jdbcType=INTEGER}, #{end,jdbcType=VARCHAR}, #{endPinyin,jdbcType=VARCHAR}, 
-      #{endTime,jdbcType=TIME}, #{endIndex,jdbcType=INTEGER}, #{ydz,jdbcType=INTEGER}, 
-      #{ydzPrice,jdbcType=DECIMAL}, #{edz,jdbcType=INTEGER}, #{edzPrice,jdbcType=DECIMAL}, 
-      #{rw,jdbcType=INTEGER}, #{rwPrice,jdbcType=DECIMAL}, #{yw,jdbcType=INTEGER}, #{ywPrice,jdbcType=DECIMAL}, 
+    values (#{id,jdbcType=BIGINT}, #{date,jdbcType=DATE}, #{trainCode,jdbcType=VARCHAR},
+      #{start,jdbcType=VARCHAR}, #{startPinyin,jdbcType=VARCHAR}, #{startTime,jdbcType=TIME},
+      #{startIndex,jdbcType=INTEGER}, #{end,jdbcType=VARCHAR}, #{endPinyin,jdbcType=VARCHAR},
+      #{endTime,jdbcType=TIME}, #{endIndex,jdbcType=INTEGER}, #{ydz,jdbcType=INTEGER},
+      #{ydzPrice,jdbcType=DECIMAL}, #{edz,jdbcType=INTEGER}, #{edzPrice,jdbcType=DECIMAL},
+      #{rw,jdbcType=INTEGER}, #{rwPrice,jdbcType=DECIMAL}, #{yw,jdbcType=INTEGER}, #{ywPrice,jdbcType=DECIMAL},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.jiawa.train.business.domain.DailyTrainTicket">
+  <insert id="insertSelective" parameterType="tech.songjian.train.business.domain.DailyTrainTicket">
     insert into daily_train_ticket
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -266,7 +266,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.jiawa.train.business.domain.DailyTrainTicketExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="tech.songjian.train.business.domain.DailyTrainTicketExample" resultType="java.lang.Long">
     select count(*) from daily_train_ticket
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -370,7 +370,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.jiawa.train.business.domain.DailyTrainTicket">
+  <update id="updateByPrimaryKeySelective" parameterType="tech.songjian.train.business.domain.DailyTrainTicket">
     update daily_train_ticket
     <set>
       <if test="date != null">
@@ -436,7 +436,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.jiawa.train.business.domain.DailyTrainTicket">
+  <update id="updateByPrimaryKey" parameterType="tech.songjian.train.business.domain.DailyTrainTicket">
     update daily_train_ticket
     set `date` = #{date,jdbcType=DATE},
       train_code = #{trainCode,jdbcType=VARCHAR},
