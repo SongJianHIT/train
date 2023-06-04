@@ -3,7 +3,7 @@
  * @package tech.songjian.batch.config
  * @className tech.songjian.batch.config.BatchApplication
  */
-package tech.songjian.batch.config;
+package tech.songjian.train.batch.config;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
