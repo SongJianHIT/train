@@ -1,5 +1,4 @@
-# 【JianTrain】乐购票12306系统
-
+# <p align="center">JianTrain乐购票12306系统</p>
 ## 技术栈
 
 前端技术栈：
