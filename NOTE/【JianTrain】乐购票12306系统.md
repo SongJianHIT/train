@@ -22,7 +22,13 @@
 
 ## QuickStart
 
-### 前端页面
+### 拉取项目到本地
+
+````
+git clone https://github.com/SongJianHIT/train.git
+````
+
+### 前端页面启动
 
 在 `web` 文件夹下执行：
 
