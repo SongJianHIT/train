@@ -41,7 +41,6 @@ public class TrainService {
             if (ObjectUtil.isNotEmpty(trainDB)) {
                 throw new BusinessException(BusinessExceptionEnum.BUSINESS_TRAIN_CODE_UNIQUE_ERROR);
             }
-
             train.setId(SnowUtil.getSnowflakeNextId());
             train.setCreateTime(now);
             train.setUpdateTime(now);

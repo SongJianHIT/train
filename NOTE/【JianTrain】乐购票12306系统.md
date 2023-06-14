@@ -28,9 +28,9 @@
 git clone https://github.com/SongJianHIT/train.git
 ````
 
-### 前端页面启动
+### 用户前端页面启动
 
-在 `web` 文件夹下执行：
+在 `/web` 文件夹下执行：
 
 ```bash
 # 安装环境
@@ -41,5 +41,15 @@ npm run serve-dev
 
 ![image-20230614120647849](./assets/image-20230614120647849.png)
 
+## 控台前端页面启动
 
+在 `/admin` 文件夹下执行：
 
+```bash
+# 安装环境
+npm install
+# 运行脚本
+npm run admin-dev
+```
+
+![image-20230614132619881](./assets/image-20230614132619881.png)

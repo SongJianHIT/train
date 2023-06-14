@@ -48,6 +48,10 @@ public class DailyTrainService {
     @Resource
     private DailyTrainTicketService dailyTrainTicketService;
 
+    /**
+     * 新增每日车次
+     * @param req
+     */
     public void save(DailyTrainSaveReq req) {
         DateTime now = DateTime.now();
         DailyTrain dailyTrain = BeanUtil.copyProperties(req, DailyTrain.class);
@@ -62,19 +66,27 @@ public class DailyTrainService {
         }
     }
 
+    /**
+     * 条件查询每日车次
+     * @param req
+     * @return
+     */
     public PageResp<DailyTrainQueryResp> queryList(DailyTrainQueryReq req) {
         DailyTrainExample dailyTrainExample = new DailyTrainExample();
+        // 设置排序规则
         dailyTrainExample.setOrderByClause("date desc, code asc");
         DailyTrainExample.Criteria criteria = dailyTrainExample.createCriteria();
+        // 条件拼接，某些条件不一定有值，因此需要判断
         if (ObjectUtil.isNotNull(req.getDate())) {
             criteria.andDateEqualTo(req.getDate());
         }
         if (ObjectUtil.isNotEmpty(req.getCode())) {
             criteria.andCodeEqualTo(req.getCode());
         }
-
         LOG.info("查询页码：{}", req.getPage());
         LOG.info("每页条数：{}", req.getSize());
+
+        // 开启分页
         PageHelper.startPage(req.getPage(), req.getSize());
         List<DailyTrain> dailyTrainList = dailyTrainMapper.selectByExample(dailyTrainExample);
 
@@ -90,6 +102,10 @@ public class DailyTrainService {
         return pageResp;
     }
 
+    /**
+     * 删除每日车次
+     * @param id
+     */
     public void delete(Long id) {
         dailyTrainMapper.deleteByPrimaryKey(id);
     }
