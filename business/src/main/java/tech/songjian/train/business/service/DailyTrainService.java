@@ -126,6 +126,11 @@ public class DailyTrainService {
         }
     }
 
+    /**
+     * 生成指定日期指定车次的当日火车数据
+     * @param date
+     * @param train
+     */
     @Transactional
     public void genDailyTrain(Date date, Train train) {
         LOG.info("生成日期【{}】车次【{}】的信息开始", DateUtil.formatDate(date), train.getCode());
@@ -139,6 +144,7 @@ public class DailyTrainService {
         // 生成该车次的数据
         DateTime now = DateTime.now();
         DailyTrain dailyTrain = BeanUtil.copyProperties(train, DailyTrain.class);
+        // 雪花算法生成 id
         dailyTrain.setId(SnowUtil.getSnowflakeNextId());
         dailyTrain.setCreateTime(now);
         dailyTrain.setUpdateTime(now);

@@ -1,4 +1,4 @@
-# 【JianTrain】每日火车数据生成
+# 【JianTrain-11】每日火车数据生成
 
 > 使用技术：
 >
@@ -21,7 +21,7 @@
 
 定时任务逻辑：
 
-![image-20230614144226815](./assets/image-20230614144226815.png)
+<img src="./assets/image-20230614144226815.png" alt="image-20230614144226815" style="zoom: 67%;" />
 
 可以看到分为两条线：
 
@@ -110,4 +110,82 @@ public class BatchApplication {
 ```
 
 <img src="./assets/image-20230614151119011.png" alt="image-20230614151119011" style="zoom:80%;" />
+
+在 Business 模块中，完成服务提供方法：
+
+```java
+/**
+ * 远程服务提供，生成每日火车数据
+ * @param date
+ * @return
+ */
+@GetMapping("/gen-daily/{date}")
+public CommonResp<Object> genDaily(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+    dailyTrainService.genDaily(date);
+    return new CommonResp<>();
+}
+```
+
+进一步完成 dailyTrainService：
+
+> 这里值得关注的点是，**跑批任务一定要做好可重复执行的情况**，所以必须采用 **”先删除后生成“** 模式。
+
+```java
+/**
+* 生成某日所有车次信息，包括车次、车站、车厢、座位
+* @param date
+*/
+public void genDaily(Date date) {
+    // 查询出所有火车的基础数据
+    List<Train> trainList = trainService.selectAll();
+    if (CollUtil.isEmpty(trainList)) {
+        LOG.info("没有车次基础数据，任务结束");
+        return;
+    }
+    for (Train train : trainList) {
+        // 对每一个车次的当天数据生成
+        genDailyTrain(date, train);
+    }
+}
+
+@Transactional
+public void genDailyTrain(Date date, Train train) {
+    LOG.info("生成日期【{}】车次【{}】的信息开始", DateUtil.formatDate(date), train.getCode());
+
+    // 删除该车次已有的数据
+    DailyTrainExample dailyTrainExample = new DailyTrainExample();
+    dailyTrainExample.createCriteria()
+        .andDateEqualTo(date)
+        .andCodeEqualTo(train.getCode());
+    dailyTrainMapper.deleteByExample(dailyTrainExample);
+
+    // 生成该车次的数据
+    DateTime now = DateTime.now();
+    DailyTrain dailyTrain = BeanUtil.copyProperties(train, DailyTrain.class);
+    dailyTrain.setId(SnowUtil.getSnowflakeNextId());
+    dailyTrain.setCreateTime(now);
+    dailyTrain.setUpdateTime(now);
+    dailyTrain.setDate(date);
+    dailyTrainMapper.insert(dailyTrain);
+
+    // 生成该车次的车站数据
+    dailyTrainStationService.genDaily(date, train.getCode());
+    // 生成该车次的车厢数据
+    dailyTrainCarriageService.genDaily(date, train.getCode());
+    // 生成该车次的座位数据
+    dailyTrainSeatService.genDaily(date, train.getCode());
+    // 生成该车次的余票数据
+    dailyTrainTicketService.genDaily(dailyTrain, date, train.getCode());
+
+    LOG.info("生成日期【{}】车次【{}】的信息结束", DateUtil.formatDate(date), train.getCode());
+}
+```
+
+### 手动生成
+
+在前端页面中可传入指定日期：
+
+![image-20230614154415544](./assets/image-20230614154415544.png)
+
+然后手动执行，前端发出请求到 Business 的 `genDaily(Date date)` 接口上。
 

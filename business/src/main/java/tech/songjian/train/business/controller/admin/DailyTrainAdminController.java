@@ -39,6 +39,11 @@ public class DailyTrainAdminController {
         return new CommonResp<>();
     }
 
+    /**
+     * 远程服务提供，生成每日火车数据
+     * @param date
+     * @return
+     */
     @GetMapping("/gen-daily/{date}")
     public CommonResp<Object> genDaily(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
         dailyTrainService.genDaily(date);
