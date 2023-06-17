@@ -104,6 +104,7 @@ public class DailyTrainTicketService {
 
         // 删除某日某车次的余票信息
         DailyTrainTicketExample dailyTrainTicketExample = new DailyTrainTicketExample();
+        // 添加条件，哪一天，哪一辆车
         dailyTrainTicketExample.createCriteria()
                 .andDateEqualTo(date)
                 .andTrainCodeEqualTo(trainCode);
@@ -120,11 +121,14 @@ public class DailyTrainTicketService {
         for (int i = 0; i < stationList.size(); i++) {
             // 得到出发站
             TrainStation trainStationStart = stationList.get(i);
+            // 统计两站 sumKM 距离
             BigDecimal sumKM = BigDecimal.ZERO;
+            // 二层循环
             for (int j = (i + 1); j < stationList.size(); j++) {
                 TrainStation trainStationEnd = stationList.get(j);
                 sumKM = sumKM.add(trainStationEnd.getKm());
 
+                // 创建对象
                 DailyTrainTicket dailyTrainTicket = new DailyTrainTicket();
                 dailyTrainTicket.setId(SnowUtil.getSnowflakeNextId());
                 dailyTrainTicket.setDate(date);
@@ -137,6 +141,7 @@ public class DailyTrainTicketService {
                 dailyTrainTicket.setEndPinyin(trainStationEnd.getNamePinyin());
                 dailyTrainTicket.setEndTime(trainStationEnd.getInTime());
                 dailyTrainTicket.setEndIndex(trainStationEnd.getIndex());
+                // 调用 dailyTrainSeatService 服务计算每个座次的余票数据
                 int ydz = dailyTrainSeatService.countSeat(date, trainCode, SeatTypeEnum.YDZ.getCode());
                 int edz = dailyTrainSeatService.countSeat(date, trainCode, SeatTypeEnum.EDZ.getCode());
                 int rw = dailyTrainSeatService.countSeat(date, trainCode, SeatTypeEnum.RW.getCode());
@@ -159,10 +164,34 @@ public class DailyTrainTicketService {
                 dailyTrainTicket.setYwPrice(ywPrice);
                 dailyTrainTicket.setCreateTime(now);
                 dailyTrainTicket.setUpdateTime(now);
+
+                // 数据库插入
                 dailyTrainTicketMapper.insert(dailyTrainTicket);
             }
         }
         LOG.info("生成日期【{}】车次【{}】的余票信息结束", DateUtil.formatDate(date), trainCode);
+    }
 
+    /**
+     * 查询余票数量
+     * @param date 日期
+     * @param trainCode 火车编号
+     * @param start 起始站
+     * @param end 终点站
+     * @return
+     */
+    public DailyTrainTicket selectByUnique(Date date, String trainCode, String start, String end) {
+        DailyTrainTicketExample dailyTrainTicketExample = new DailyTrainTicketExample();
+        dailyTrainTicketExample.createCriteria()
+                .andDateEqualTo(date)
+                .andTrainCodeEqualTo(trainCode)
+                .andStartEqualTo(start)
+                .andEndEqualTo(end);
+        List<DailyTrainTicket> list = dailyTrainTicketMapper.selectByExample(dailyTrainTicketExample);
+        if (CollUtil.isNotEmpty(list)) {
+            return list.get(0);
+        } else {
+            return null;
+        }
     }
 }

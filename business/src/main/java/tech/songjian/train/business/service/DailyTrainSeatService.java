@@ -118,6 +118,13 @@ public class DailyTrainSeatService {
         LOG.info("生成日期【{}】车次【{}】的座位信息结束", DateUtil.formatDate(date), trainCode);
     }
 
+    /**
+     * 根据火车编号、日期查询指定座次的数量
+     * @param date
+     * @param trainCode
+     * @param seatType
+     * @return
+     */
     public int countSeat(Date date, String trainCode, String seatType) {
         DailyTrainSeatExample example = new DailyTrainSeatExample();
         example.createCriteria()
