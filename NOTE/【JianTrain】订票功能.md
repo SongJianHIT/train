@@ -203,3 +203,77 @@
 - 不选座：遍历一等座车厢，每个车厢从1号座位开始找A列座位，未被购买的，就预选中；再看旁边的B，如果满足就选，不满足就继续查AB。
 
 **从第二个座位开始，需要计算和第一个座位的偏移值，可以减少循环！**
+
+#### 订单留痕
+
+订单是重要信息，需要进行留痕：
+
+```JAVA
+public enum ConfirmOrderStatusEnum {
+
+    INIT("I", "初始"),
+    PENDING("P", "处理中"),
+    SUCCESS("S", "成功"),
+    FAILURE("F", "失败"),
+    EMPTY("E", "无票"),
+    CANCEL("C", "取消");
+}
+```
+
+在数据库的设计中，加入一个字段来显示订单的状态，时刻保持订单的状态维护。
+
+#### 前端传过来的内容
+
+```JSON
+{
+    "dailyTrainTicketId":"1670018082594230272",
+    "date":"2023-06-29",
+    "trainCode":"1",
+    "start":"广州站",
+    "end":"深圳站",
+    "tickets":
+    [
+        {
+            "passengerId":"1664650381436784640",
+         	"passengerType":"2",
+         	"seatTypeCode":"1",
+         	"passengerName":"33",
+         	"passengerIdCard":"1",
+         	"seat":"D1"
+        },
+        {
+            "passengerId":"1664650465926844416",
+         	"passengerType":"2",
+            "seatTypeCode":"1",
+            "passengerName":"55的",
+            "passengerIdCard":"1232",
+            "seat":"F1"
+        }
+    ]
+}
+```
+
+#### 代码实现
+
+先写一个接口接受请求：
+
+```JAVA
+@RequestMapping("/confirm-order")
+public class ConfirmOrderController {
+    @Resource
+    private ConfirmOrderService confirmOrderService;
+    /**
+     * 用户提交订单
+     * @param req
+     * @return
+     */
+    @PostMapping("/do")
+    public CommonResp<Object> doConfirm(@Valid @RequestBody ConfirmOrderDoReq req) {
+        confirmOrderService.doConfirm(req);
+        return new CommonResp<>();
+    }
+}
+```
+
+完成里面的逻辑：
+

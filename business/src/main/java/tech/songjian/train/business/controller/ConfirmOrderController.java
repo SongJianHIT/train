@@ -14,7 +14,6 @@ import tech.songjian.train.common.resp.CommonResp;
 @RestController
 @RequestMapping("/confirm-order")
 public class ConfirmOrderController {
-
     @Resource
     private ConfirmOrderService confirmOrderService;
 
@@ -28,5 +27,4 @@ public class ConfirmOrderController {
         confirmOrderService.doConfirm(req);
         return new CommonResp<>();
     }
-
 }
