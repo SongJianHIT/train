@@ -153,7 +153,40 @@
 
 点击预定后：
 
-![image-20230617185602658](./assets/image-20230617185602658.png)
+![image-20230617193931666](./assets/image-20230617193931666.png)
 
 在这个界面中就可以提交订单了！
+
+需要完成上述页面，首先是要获取当前 member 的所有乘客。
+
+### 查询当前用户绑定的乘客
+
+```JAVA
+	/**
+     * 查 member 绑定的所有乘客
+     * @return
+     */
+    @GetMapping("/query-mine")
+    public CommonResp<List<PassengerQueryResp>> queryMine() {
+        List<PassengerQueryResp> list = passengerService.queryMine();
+        return new CommonResp<>(list);
+    }
+```
+
+构造一个条件查询极客
+
+```JAVA
+	/**
+     * 查询我的所有乘客
+     */
+    public List<PassengerQueryResp> queryMine() {
+        PassengerExample passengerExample = new PassengerExample();
+        passengerExample.setOrderByClause("name asc");
+        PassengerExample.Criteria criteria = passengerExample.createCriteria();
+        // 需要从 ThreadLoacl 中获取 id
+        criteria.andMemberIdEqualTo(LoginMemberContext.getId());
+        List<Passenger> list = passengerMapper.selectByExample(passengerExample);
+        return BeanUtil.copyToList(list, PassengerQueryResp.class);
+    }
+```
 

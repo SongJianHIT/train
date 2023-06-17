@@ -10,6 +10,8 @@ import tech.songjian.train.member.req.PassengerQueryReq;
 import tech.songjian.train.member.req.PassengerSaveReq;
 import tech.songjian.train.member.resp.PassengerQueryResp;
 
+import java.util.List;
+
 /**
  * PassengerService
  * @description 乘客service接口
@@ -36,4 +38,7 @@ public interface PassengerService {
      * @param id
      */
     public void delete(Long id);
+
+    List<PassengerQueryResp> queryMine();
+
 }

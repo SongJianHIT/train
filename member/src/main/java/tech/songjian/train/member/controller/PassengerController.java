@@ -18,6 +18,8 @@ import tech.songjian.train.member.req.PassengerSaveReq;
 import tech.songjian.train.member.resp.PassengerQueryResp;
 import tech.songjian.train.member.service.PassengerService;
 
+import java.util.List;
+
 import static tech.songjian.train.common.exception.BusinessExceptionEnum.MEMBER_MAX_PASSENGER;
 
 /**
@@ -67,6 +69,16 @@ public class PassengerController {
     public CommonResp delete(@PathVariable Long id) {
         passengerService.delete(id);
         return new CommonResp<>();
+    }
+
+    /**
+     * 查 member 绑定的所有乘客
+     * @return
+     */
+    @GetMapping("/query-mine")
+    public CommonResp<List<PassengerQueryResp>> queryMine() {
+        List<PassengerQueryResp> list = passengerService.queryMine();
+        return new CommonResp<>(list);
     }
 }
 
