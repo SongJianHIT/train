@@ -92,6 +92,8 @@ public class ConfirmOrderService {
 
         // 查出余票记录，需要得到真实的库存
 
+
+
         // 扣减余票数量，并判断余票是否足够
 
         // 选座

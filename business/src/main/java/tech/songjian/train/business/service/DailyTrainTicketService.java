@@ -173,7 +173,7 @@ public class DailyTrainTicketService {
     }
 
     /**
-     * 查询余票数量
+     * 按唯一键查询余票表的余票信息
      * @param date 日期
      * @param trainCode 火车编号
      * @param start 起始站
