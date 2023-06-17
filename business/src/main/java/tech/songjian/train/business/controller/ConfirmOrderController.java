@@ -18,6 +18,11 @@ public class ConfirmOrderController {
     @Resource
     private ConfirmOrderService confirmOrderService;
 
+    /**
+     * 用户提交订单
+     * @param req
+     * @return
+     */
     @PostMapping("/do")
     public CommonResp<Object> doConfirm(@Valid @RequestBody ConfirmOrderDoReq req) {
         confirmOrderService.doConfirm(req);

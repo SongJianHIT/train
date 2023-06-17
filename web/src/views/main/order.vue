@@ -339,10 +339,11 @@ export default defineComponent({
     };
 
     const handleOk = () => {
-      if (Tool.isEmpty(imageCode.value)) {
-        notification.error({description: '验证码不能为空'});
-        return;
-      }
+      // TODO: 暂时不校验，直接放行
+      // if (Tool.isEmpty(imageCode.value)) {
+      //   notification.error({description: '验证码不能为空'});
+      //   return;
+      // }
 
       console.log("选好的座位：", chooseSeatObj.value);
 
@@ -377,18 +378,18 @@ export default defineComponent({
         start: dailyTrainTicket.start,
         end: dailyTrainTicket.end,
         tickets: tickets.value,
-        imageCodeToken: imageCodeToken.value,
-        imageCode: imageCode.value,
-        lineNumber: lineNumber.value
+        // imageCodeToken: imageCodeToken.value,
+        // imageCode: imageCode.value,
+        // lineNumber: lineNumber.value
       }).then((response) => {
         let data = response.data;
         if (data.success) {
-          // notification.success({description: "下单成功！"});
-          visible.value = false;
-          imageCodeModalVisible.value = false;
-          lineModalVisible.value = true;
-          confirmOrderId.value = data.content;
-          queryLineCount();
+          notification.success({description: "下单成功！"});
+          // visible.value = false;
+          // imageCodeModalVisible.value = false;
+          // lineModalVisible.value = true;
+          // confirmOrderId.value = data.content;
+          // queryLineCount();
         } else {
           notification.error({description: data.message});
         }
@@ -400,38 +401,38 @@ export default defineComponent({
     let queryLineCountInterval;
 
     // 定时查询订单结果/排队数量
-    const queryLineCount = () => {
-      confirmOrderLineCount.value = -1;
-      queryLineCountInterval = setInterval(function () {
-        axios.get("/business/confirm-order/query-line-count/" + confirmOrderId.value).then((response) => {
-          let data = response.data;
-          if (data.success) {
-            let result = data.content;
-            switch (result) {
-              case -1 :
-                notification.success({description: "购票成功！"});
-                lineModalVisible.value = false;
-                clearInterval(queryLineCountInterval);
-                break;
-              case -2:
-                notification.error({description: "购票失败！"});
-                lineModalVisible.value = false;
-                clearInterval(queryLineCountInterval);
-                break;
-              case -3:
-                notification.error({description: "抱歉，没票了！"});
-                lineModalVisible.value = false;
-                clearInterval(queryLineCountInterval);
-                break;
-              default:
-                confirmOrderLineCount.value = result;
-            }
-          } else {
-            notification.error({description: data.message});
-          }
-        });
-      }, 500);
-    };
+    // const queryLineCount = () => {
+    //   confirmOrderLineCount.value = -1;
+    //   queryLineCountInterval = setInterval(function () {
+    //     axios.get("/business/confirm-order/query-line-count/" + confirmOrderId.value).then((response) => {
+    //       let data = response.data;
+    //       if (data.success) {
+    //         let result = data.content;
+    //         switch (result) {
+    //           case -1 :
+    //             notification.success({description: "购票成功！"});
+    //             lineModalVisible.value = false;
+    //             clearInterval(queryLineCountInterval);
+    //             break;
+    //           case -2:
+    //             notification.error({description: "购票失败！"});
+    //             lineModalVisible.value = false;
+    //             clearInterval(queryLineCountInterval);
+    //             break;
+    //           case -3:
+    //             notification.error({description: "抱歉，没票了！"});
+    //             lineModalVisible.value = false;
+    //             clearInterval(queryLineCountInterval);
+    //             break;
+    //           default:
+    //             confirmOrderLineCount.value = result;
+    //         }
+    //       } else {
+    //         notification.error({description: data.message});
+    //       }
+    //     });
+    //   }, 500);
+    // };
 
     /* ------------------- 第二层验证码 --------------------- */
     const imageCodeModalVisible = ref();
@@ -482,7 +483,7 @@ export default defineComponent({
         // 第一层验证通过
         firstImageCodeModalVisible.value = false;
         // 暂时不开启第二层图片验证码
-        // TODO showImageCodeModal();
+        showImageCodeModal();
       } else {
         notification.error({description: '验证码错误'});
       }
