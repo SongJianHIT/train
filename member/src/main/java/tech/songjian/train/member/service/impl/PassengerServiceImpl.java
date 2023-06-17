@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import tech.songjian.train.common.context.LoginMemberContext;
+import tech.songjian.train.common.exception.BusinessException;
+import tech.songjian.train.common.exception.BusinessExceptionEnum;
 import tech.songjian.train.common.resp.PageResp;
 import tech.songjian.train.common.util.SnowUtil;
 import tech.songjian.train.member.domain.Passenger;
@@ -27,6 +29,8 @@ import tech.songjian.train.member.resp.PassengerQueryResp;
 import tech.songjian.train.member.service.PassengerService;
 
 import java.util.List;
+
+import static tech.songjian.train.common.consts.PassenagerConst.MAX_PASSENGERNUMB;
 
 /**
  * PassengerServiceImpl
@@ -49,6 +53,14 @@ public class PassengerServiceImpl implements PassengerService {
      */
     @Override
     public void save(PassengerSaveReq req) {
+
+        PassengerExample passengerExample = new PassengerExample();
+        passengerExample.createCriteria().andMemberIdEqualTo(LoginMemberContext.getId());
+        long l = passengerMapper.countByExample(passengerExample);
+        if (l >= MAX_PASSENGERNUMB) {
+            // 如果超过设置最大的可添加乘客数，则不允许添加
+            throw new BusinessException(BusinessExceptionEnum.MEMBER_MAX_PASSENGER);
+        }
         DateTime now = DateTime.now();
         Passenger passenger = new Passenger();
         // 如果没有id，则是新增保存

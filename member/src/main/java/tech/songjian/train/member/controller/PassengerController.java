@@ -9,12 +9,16 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tech.songjian.train.common.context.LoginMemberContext;
+import tech.songjian.train.common.exception.BusinessException;
+import tech.songjian.train.common.exception.BusinessExceptionEnum;
 import tech.songjian.train.common.resp.CommonResp;
 import tech.songjian.train.common.resp.PageResp;
 import tech.songjian.train.member.req.PassengerQueryReq;
 import tech.songjian.train.member.req.PassengerSaveReq;
 import tech.songjian.train.member.resp.PassengerQueryResp;
 import tech.songjian.train.member.service.PassengerService;
+
+import static tech.songjian.train.common.exception.BusinessExceptionEnum.MEMBER_MAX_PASSENGER;
 
 /**
  * PassengerController
@@ -36,7 +40,7 @@ public class PassengerController {
      * @return
      */
     @PostMapping("/save")
-    public CommonResp login(@Valid @RequestBody PassengerSaveReq req) {
+    public CommonResp save(@Valid @RequestBody PassengerSaveReq req) {
         passengerService.save(req);
         return new CommonResp<>();
     }
