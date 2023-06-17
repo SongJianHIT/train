@@ -481,7 +481,8 @@ export default defineComponent({
       if (parseInt(firstImageCodeTarget.value) === parseInt(firstImageCodeSourceA.value + firstImageCodeSourceB.value)) {
         // 第一层验证通过
         firstImageCodeModalVisible.value = false;
-        showImageCodeModal();
+        // 暂时不开启第二层图片验证码
+        // TODO showImageCodeModal();
       } else {
         notification.error({description: '验证码错误'});
       }
