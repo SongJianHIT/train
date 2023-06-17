@@ -119,4 +119,20 @@ public class DailyTrainCarriageService {
         }
         LOG.info("生成日期【{}】车次【{}】的车厢信息结束", DateUtil.formatDate(date), trainCode);
     }
+
+    /**
+     * 根据日期、火车号、座次来查询车厢列表
+     * @param date
+     * @param trainCode
+     * @param seatType
+     * @return
+     */
+    public List<DailyTrainCarriage> selectBySeatType (Date date, String trainCode, String seatType) {
+        DailyTrainCarriageExample dailyTrainCarriageExample = new DailyTrainCarriageExample();
+        dailyTrainCarriageExample.createCriteria()
+                .andDateEqualTo(date)
+                .andTrainCodeEqualTo(trainCode)
+                .andSeatTypeEqualTo(seatType);
+        return dailyTrainCarriageMapper.selectByExample(dailyTrainCarriageExample);
+    }
 }
