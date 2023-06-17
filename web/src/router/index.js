@@ -2,12 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import store from "@/store";
 import {notification} from "ant-design-vue";
 
-const routes = [
-  {
+const routes = [{
     path: '/login',
     component: () => import('../views/login.vue')
-  },
-  {
+  }, {
     path: '/',
     component: () => import('../views/main.vue'),
     meta: {
@@ -25,13 +23,20 @@ const routes = [
     }, {
       path: 'order',
       component: () => import('../views/main/order.vue'),
+    }, {
+      path: 'my-ticket',
+      component: () => import('../views/main/my-ticket.vue')
+    }, {
+      path: 'seat',
+      component: () => import('../views/main/seat.vue')
+    }, {
+      path: 'admin',
+      component: () => import('../views/main/admin.vue')
     }]
-  },
-  {
+  }, {
     path: '',
     redirect: '/welcome'
-  }
-]
+  }];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
