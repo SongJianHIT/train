@@ -182,6 +182,7 @@ public class DailyTrainTicketService {
      */
     public DailyTrainTicket selectByUnique(Date date, String trainCode, String start, String end) {
         DailyTrainTicketExample dailyTrainTicketExample = new DailyTrainTicketExample();
+        // TODO 调优 注意最左匹配原则
         dailyTrainTicketExample.createCriteria()
                 .andDateEqualTo(date)
                 .andTrainCodeEqualTo(trainCode)
