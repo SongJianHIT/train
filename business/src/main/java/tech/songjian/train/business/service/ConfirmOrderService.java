@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -15,6 +16,7 @@ import tech.songjian.train.business.domain.ConfirmOrder;
 import tech.songjian.train.business.domain.ConfirmOrderExample;
 import tech.songjian.train.business.domain.DailyTrainTicket;
 import tech.songjian.train.business.enums.ConfirmOrderStatusEnum;
+import tech.songjian.train.business.enums.SeatColEnum;
 import tech.songjian.train.business.enums.SeatTypeEnum;
 import tech.songjian.train.business.mapper.ConfirmOrderMapper;
 import tech.songjian.train.business.req.ConfirmOrderDoReq;
@@ -27,6 +29,7 @@ import tech.songjian.train.common.exception.BusinessExceptionEnum;
 import tech.songjian.train.common.resp.PageResp;
 import tech.songjian.train.common.util.SnowUtil;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -90,6 +93,8 @@ public class ConfirmOrderService {
         String trainCode = req.getTrainCode();
         String start = req.getStart();
         String end = req.getEnd();
+        List<ConfirmOrderTicketReq> tickets = req.getTickets();
+
         ConfirmOrder confirmOrder = new ConfirmOrder();
         confirmOrder.setCreateTime(dateTime);
         confirmOrder.setUpdateTime(dateTime);
@@ -101,7 +106,7 @@ public class ConfirmOrderService {
         confirmOrder.setEnd(end);
         confirmOrder.setDailyTrainTicketId(req.getDailyTrainTicketId());
         confirmOrder.setStatus(ConfirmOrderStatusEnum.INIT.getCode());
-        confirmOrder.setTickets(JSON.toJSONString(req.getTickets()));
+        confirmOrder.setTickets(JSON.toJSONString(tickets));
         confirmOrderMapper.insert(confirmOrder);
 
         // 查出余票记录，需要得到真实的库存
@@ -110,6 +115,43 @@ public class ConfirmOrderService {
 
         // 预扣减余票数量，并判断余票是否足够
         reduceTickets(req, dailyTrainTicket);
+
+        // 计算相对第一个座位的偏移值
+        // 比如：选择的是[C1, D2]，那么偏移值就是 [0, 5]
+        // 偏移值数组第一位永远是0
+        ConfirmOrderTicketReq ticketReq0 = tickets.get(0);
+        if (StrUtil.isNotBlank(ticketReq0.getSeat())) {
+            // 如果本次购票有选座
+            LOG.info("本次购票有选择座位");
+            // 查询本次选座的座位类型有哪些列，用于计算所选座位与第一个座位的偏移值
+            List<SeatColEnum> colEnumList = SeatColEnum.getColsByType(ticketReq0.getSeatTypeCode());
+            LOG.info("本次选座的座位类型包含的列：{}", colEnumList);
+
+            // 组成和前端两排一样的列表，用于做参照的座位列表
+            List<String> referSeatList = new ArrayList<>();
+            for (int i = 1; i <= 2; ++i) {
+                for (SeatColEnum seatColEnum : colEnumList) {
+                    referSeatList.add(seatColEnum.getCode() + i);
+                }
+            }
+            LOG.info("用于作参照的两排座位：{}", referSeatList);
+            // 计算得到所有座位的绝对偏移值
+            List<Integer> absoluteOffsetList = new ArrayList<>();
+            for (ConfirmOrderTicketReq ticketReq : tickets) {
+                int index = referSeatList.indexOf(ticketReq.getSeat());
+                absoluteOffsetList.add(index);
+            }
+            // 全部减去第一个，得到相对偏移
+            List<Integer> offsetList = new ArrayList<>();
+            for (Integer idx : absoluteOffsetList) {
+                int off = idx - absoluteOffsetList.get(0);
+                offsetList.add(off);
+            }
+            LOG.info("计算得到相对偏移：{}", offsetList);
+        } else {
+            LOG.info("本次购票没有选择座位");
+        }
+
         // 选座
 
             // 一个车箱一个车箱的获取座位数据
@@ -143,7 +185,7 @@ public class ConfirmOrderService {
                         throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_TICKET_COUNT_ERROR);
                     }
                     // 能够扣减，则把值暂存在对象中
-                    dailyTrainTicket.setYdz(countLeft);
+                    dailyTrainTicket.setEdz(countLeft);
                 }
                 case RW -> {
                     int countLeft = dailyTrainTicket.getRw() - 1;
@@ -151,7 +193,7 @@ public class ConfirmOrderService {
                         throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_TICKET_COUNT_ERROR);
                     }
                     // 能够扣减，则把值暂存在对象中
-                    dailyTrainTicket.setYdz(countLeft);
+                    dailyTrainTicket.setRw(countLeft);
                 }
                 case YW -> {
                     int countLeft = dailyTrainTicket.getYw() - 1;
@@ -159,7 +201,7 @@ public class ConfirmOrderService {
                         throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_TICKET_COUNT_ERROR);
                     }
                     // 能够扣减，则把值暂存在对象中
-                    dailyTrainTicket.setYdz(countLeft);
+                    dailyTrainTicket.setYw(countLeft);
                 }
             }
         }
