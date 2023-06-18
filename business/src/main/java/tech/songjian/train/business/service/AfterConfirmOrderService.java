@@ -1,15 +1,5 @@
 package tech.songjian.train.business.service;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.util.EnumUtil;
-import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSON;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,25 +7,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.songjian.train.business.domain.*;
 import tech.songjian.train.business.enums.ConfirmOrderStatusEnum;
-import tech.songjian.train.business.enums.SeatColEnum;
-import tech.songjian.train.business.enums.SeatTypeEnum;
 import tech.songjian.train.business.feign.MemberFeign;
 import tech.songjian.train.business.mapper.ConfirmOrderMapper;
 import tech.songjian.train.business.mapper.DailyTrainSeatMapper;
 import tech.songjian.train.business.mapper.customer.DailyTrainTicketMapperCust;
-import tech.songjian.train.business.req.ConfirmOrderDoReq;
-import tech.songjian.train.business.req.ConfirmOrderQueryReq;
 import tech.songjian.train.business.req.ConfirmOrderTicketReq;
-import tech.songjian.train.business.resp.ConfirmOrderQueryResp;
 import tech.songjian.train.common.context.LoginMemberContext;
-import tech.songjian.train.common.exception.BusinessException;
-import tech.songjian.train.common.exception.BusinessExceptionEnum;
 import tech.songjian.train.common.req.MemberTicketReq;
 import tech.songjian.train.common.resp.CommonResp;
-import tech.songjian.train.common.resp.PageResp;
-import tech.songjian.train.common.util.SnowUtil;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -56,6 +36,9 @@ public class AfterConfirmOrderService {
     @Resource
     private MemberFeign memberFeign;
 
+    @Resource
+    private ConfirmOrderMapper confirmOrderMapper;
+
     /**
      * 选中座位后事务处理：
      *  1、座位表修改售卖情况sell；
@@ -67,7 +50,8 @@ public class AfterConfirmOrderService {
     // @GlobalTransactional
     public void afterDoConfirm(DailyTrainTicket dailyTrainTicket,
                                List<DailyTrainSeat> finalSeatList,
-                               List<ConfirmOrderTicketReq> tickets) {
+                               List<ConfirmOrderTicketReq> tickets,
+                               ConfirmOrder confirmOrder) {
 
         for (int j = 0; j < finalSeatList.size(); j++) {
             DailyTrainSeat dailyTrainSeat = finalSeatList.get(j);
@@ -144,6 +128,13 @@ public class AfterConfirmOrderService {
             memberTicketReq.setSeatType(dailyTrainSeat.getSeatType());
             CommonResp<Object> commonResp = memberFeign.save(memberTicketReq);
             LOG.info("调用member接口，返回：{}", commonResp);
+
+            // 更新订单状态为【成功】
+            ConfirmOrder confirmOrderForUpdate = new ConfirmOrder();
+            confirmOrderForUpdate.setId(confirmOrder.getId());
+            confirmOrderForUpdate.setUpdateTime(new Date());
+            confirmOrderForUpdate.setStatus(ConfirmOrderStatusEnum.SUCCESS.getCode());
+            confirmOrderMapper.updateByPrimaryKeySelective(confirmOrderForUpdate);
         }
     }
 }

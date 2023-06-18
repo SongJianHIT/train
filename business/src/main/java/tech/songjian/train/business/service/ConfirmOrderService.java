@@ -180,7 +180,7 @@ public class ConfirmOrderService {
         LOG.info("最终选座：{}", finalSeatList);
 
         // 选中座位后事务处理：
-        afterConfirmOrderService.afterDoConfirm(dailyTrainTicket, finalSeatList, tickets);
+        afterConfirmOrderService.afterDoConfirm(dailyTrainTicket, finalSeatList, tickets, confirmOrder);
     }
 
     /**
