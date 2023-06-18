@@ -117,8 +117,5 @@ public class AfterConfirmOrderService {
                     minEndIndex,
                     maxEndIndex);
         }
-
-
-
     }
 }
