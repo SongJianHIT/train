@@ -5,8 +5,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import tech.songjian.train.common.req.PageReq;
 
 import java.util.Date;
+import java.util.Objects;
 
-public class DailyTrainTicketQueryReq extends PageReq {
+public class DailyTrainTicketQueryReq extends PageReq  {
 
     /**
      * 日期
@@ -69,5 +70,23 @@ public class DailyTrainTicketQueryReq extends PageReq {
                 ", start='" + start + '\'' +
                 ", end='" + end + '\'' +
                 "} " + super.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DailyTrainTicketQueryReq that = (DailyTrainTicketQueryReq) o;
+        return Objects.equals(date, that.date) &&
+                Objects.equals(trainCode, that.trainCode) &&
+                Objects.equals(start, that.start) &&
+                Objects.equals(end, that.end) &&
+                Objects.equals(((DailyTrainTicketQueryReq) o).getPage(), getPage()) &&
+                Objects.equals(((DailyTrainTicketQueryReq) o).getSize(), getSize());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(date, trainCode, start, end, getPage(), getSize());
     }
 }
