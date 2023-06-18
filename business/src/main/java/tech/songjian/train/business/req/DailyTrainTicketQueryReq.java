@@ -4,10 +4,11 @@ package tech.songjian.train.business.req;
 import org.springframework.format.annotation.DateTimeFormat;
 import tech.songjian.train.common.req.PageReq;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-public class DailyTrainTicketQueryReq extends PageReq  {
+public class DailyTrainTicketQueryReq extends PageReq implements Serializable {
 
     /**
      * 日期
