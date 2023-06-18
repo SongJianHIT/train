@@ -9,7 +9,8 @@ import tech.songjian.train.common.resp.CommonResp;
 
 import java.util.Date;
 
-@FeignClient(name = "business", url = "http://127.0.0.1:8002/business")
+// @FeignClient(name = "business", url = "http://127.0.0.1:8002/business")
+@FeignClient(name = "business")
 public interface BusinessFeign {
 
     @GetMapping("/hello")

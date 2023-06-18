@@ -14,11 +14,6 @@
     <groupId>com.alibaba.cloud</groupId>
     <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
 </dependency>
-<!-- 注册中心 -->
-<dependency>
-    <groupId>com.alibaba.cloud</groupId>
-    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-</dependency>
 ```
 
 ### SpringCloud配置
@@ -55,4 +50,25 @@ spring.cloud.nacos.config.file-extension=properties
 ```XML
 spring.cloud.nacos.config.namespace=JianTrainNP
 ```
+
+## 注册中心
+
+### 添加依赖
+
+```XML
+<!-- 注册中心 -->
+<dependency>
+    <groupId>com.alibaba.cloud</groupId>
+    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+</dependency>
+```
+
+### 配置
+
+```properties
+spring.cloud.nacos.discovery.server-addr=127.0.0.1:8848
+spring.cloud.nacos.discovery.namespace=JianTrainNP
+```
+
+![image-20230618173559589](./assets/image-20230618173559589.png)
 
