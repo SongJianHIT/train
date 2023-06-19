@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
+import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -57,9 +58,11 @@ public class ConfirmOrderService {
     @Resource
     private AfterConfirmOrderService afterConfirmOrderService;
 
-
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+
+    @Resource
+    private RedissonClient redissonClient;
 
     public void save(ConfirmOrderDoReq req) {
         DateTime now = DateTime.now();

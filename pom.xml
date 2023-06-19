@@ -91,7 +91,12 @@
 
             <!--至少3.18.0版本，才支持spring boot 3-->
             <!--升级到3.20.0，否则打包生产会报错：Could not initialize class org.redisson.spring.data.connection.RedissonConnection-->
-
+            <!-- https://mvnrepository.com/artifact/org.redisson/redisson-spring-boot-starter -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>3.22.0</version>
+            </dependency>
             <!-- 图形验证码 升级到JDK17后，排除掉javax.servlet-api包 -->
             <dependency>
                 <groupId>com.github.penggle</groupId>

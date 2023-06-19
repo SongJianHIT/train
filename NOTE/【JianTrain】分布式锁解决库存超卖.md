@@ -76,5 +76,22 @@ finally {
 
 ![image-20230619113023524](./assets/image-20230619113023524.png)
 
-解决了超卖，但是买的很慢！
+解决了超卖，但是买的很慢！**但实际生产项目不会用这个！** 原因是key过期的时间不好把控，有可能逻辑耗时过长，导致key过期。
+
+### 针对上述问题：Redission看门狗防止key过期
+
+使用守护线程，监控 key 的过期时间，达到一定阈值自动延长时间。
+
+ ```JAVA
+ // 使用redisson，自带看门狗
+ lock = redissonClient.getLock(lockKey);
+ boolean tryLock = lock.tryLock(0, TimeUnit.SECONDS); // 自带看门狗
+ if (tryLock) {
+     LOG.info("恭喜，抢到锁了！");
+  else {
+     // 只是没抢到锁，并不知道票抢完了没，所以提示稍候再试
+     LOG.info("很遗憾，没抢到锁");
+     throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_LOCK_FAIL);
+ }
+ ```
 
