@@ -32,6 +32,10 @@ Jmeter 的设置：
 
 局限：仅限于单机
 
+![image-20230619112522068](./assets/image-20230619112522068.png)
+
+成功解决超卖！
+
 ### 解决方法二：Redis分布式锁
 
 Redis 提供了：
@@ -55,4 +59,22 @@ if (Boolean.TRUE.equals(setIfAbsent)) {
 	return;
 }
 ```
+
+并且，在方法的最后，需要主动释放锁：
+
+```JAVA
+finally {
+    // try finally不能包含加锁的那段代码，否则加锁失败会走到finally里，从而释放别的线程的锁
+    LOG.info("购票流程结束，释放锁！lockKey：{}", lockKey);
+    redisTemplate.delete(lockKey);
+    // LOG.info("购票流程结束，释放锁！");
+    // if (null != lock && lock.isHeldByCurrentThread()) {
+    //     lock.unlock();
+    // }
+}
+```
+
+![image-20230619113023524](./assets/image-20230619113023524.png)
+
+解决了超卖，但是买的很慢！
 

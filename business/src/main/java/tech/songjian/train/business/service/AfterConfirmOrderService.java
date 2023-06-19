@@ -49,7 +49,7 @@ public class AfterConfirmOrderService {
      *  4、更新确认订单为成功
      */
     // @Transactional
-    @GlobalTransactional
+    // @GlobalTransactional
     public void afterDoConfirm(DailyTrainTicket dailyTrainTicket,
                                List<DailyTrainSeat> finalSeatList,
                                List<ConfirmOrderTicketReq> tickets,

@@ -3,6 +3,7 @@ package tech.songjian.train.business.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -103,7 +104,8 @@ public class ConfirmOrderService {
     public void doConfirm(ConfirmOrderDoReq req) {
 
         // 获取分布式锁
-        String lockKey = RedisKeyPreEnum.CONFIRM_ORDER + "-";
+        String lockKey = DateUtil.formatDate(req.getDate()) + "-" + req.getTrainCode();
+
         // setIfAbsent就是对应redis的setnx
         Boolean setIfAbsent = stringRedisTemplate.opsForValue().setIfAbsent(lockKey, lockKey, 10, TimeUnit.SECONDS);
         if (Boolean.TRUE.equals(setIfAbsent)) {
@@ -206,7 +208,7 @@ public class ConfirmOrderService {
             LOG.info("保存购票信息失败", e);
             throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_TICKET_COUNT_ERROR);
         }
-
+        stringRedisTemplate.delete(lockKey);
     }
 
     /**
