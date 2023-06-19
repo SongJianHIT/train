@@ -100,3 +100,53 @@ spring.cloud.sentinel.transport.dashboard=18080
 
 ### 依赖
 
+```xml
+<dependency>
+    <groupId>com.alibaba.csp</groupId>
+    <artifactId>sentinel-datasource-nacos</artifactId>
+</dependency>
+```
+
+### 配置
+
+```properties
+spring.cloud.sentinel.datasource.flow.nacos.server-addr=localhost:8848
+spring.cloud.sentinel.datasource.flow.nacos.namespace=JianTrainNP
+spring.cloud.sentinel.datasource.flow.nacos.dataId=sentinel
+spring.cloud.sentinel.datasource.flow.nacos.groupId=SENTINEL_GROUP
+spring.cloud.sentinel.datasource.flow.nacos.rule-type=flow
+```
+
+### Nacos中添加配置
+
+![image-20230619150335514](./assets/image-20230619150335514.png)
+
+```json
+[
+    {
+        "resource": "doConfirm",
+        "limitApp": "default",
+        "grade": 1,
+        "count": 100,
+        "strategy": 0,
+        "controlBehavior": 0,
+        "clusterMode": false
+    },
+    {
+        "resource": "confirmOrderDo",
+        "limitApp": "default",
+        "grade": 1,
+        "count": 4,
+        "strategy": 0,
+        "controlBehavior": 0,
+        "clusterMode": false
+    }
+]
+```
+
+### 测试
+
+访问接口，然后回去看控台页面：
+
+![image-20230619150311696](./assets/image-20230619150311696.png)
+
