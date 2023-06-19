@@ -13,9 +13,11 @@ import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import tech.songjian.train.business.domain.*;
 import tech.songjian.train.business.enums.ConfirmOrderStatusEnum;
+import tech.songjian.train.business.enums.RedisKeyPreEnum;
 import tech.songjian.train.business.enums.SeatColEnum;
 import tech.songjian.train.business.enums.SeatTypeEnum;
 import tech.songjian.train.business.mapper.ConfirmOrderMapper;
@@ -32,6 +34,7 @@ import tech.songjian.train.common.util.SnowUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ConfirmOrderService {
@@ -52,6 +55,10 @@ public class ConfirmOrderService {
 
     @Resource
     private AfterConfirmOrderService afterConfirmOrderService;
+
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     public void save(ConfirmOrderDoReq req) {
         DateTime now = DateTime.now();
@@ -94,6 +101,19 @@ public class ConfirmOrderService {
     }
 
     public void doConfirm(ConfirmOrderDoReq req) {
+
+        // 获取分布式锁
+        String lockKey = RedisKeyPreEnum.CONFIRM_ORDER + "-";
+        // setIfAbsent就是对应redis的setnx
+        Boolean setIfAbsent = stringRedisTemplate.opsForValue().setIfAbsent(lockKey, lockKey, 10, TimeUnit.SECONDS);
+        if (Boolean.TRUE.equals(setIfAbsent)) {
+            LOG.info("恭喜，抢到锁了！lockKey：{}", lockKey);
+        } else {
+            // 只是没抢到锁，并不知道票抢完了没，所以提示稍候再试
+            LOG.info("很遗憾，没抢到锁！lockKey：{}", lockKey);
+            throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_LOCK_FALL);
+        }
+
         // （省略）业务数据校验，如：车次是否存在，余票是否存在，车次是否在有效期内，tickets条数>0，同乘客同车次是否已买过
 
         // 保存确认订单表，状态初始（留痕）
@@ -180,7 +200,13 @@ public class ConfirmOrderService {
         LOG.info("最终选座：{}", finalSeatList);
 
         // 选中座位后事务处理：
-        afterConfirmOrderService.afterDoConfirm(dailyTrainTicket, finalSeatList, tickets, confirmOrder);
+        try {
+            afterConfirmOrderService.afterDoConfirm(dailyTrainTicket, finalSeatList, tickets, confirmOrder);
+        } catch (Exception e) {
+            LOG.info("保存购票信息失败", e);
+            throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_TICKET_COUNT_ERROR);
+        }
+
     }
 
     /**

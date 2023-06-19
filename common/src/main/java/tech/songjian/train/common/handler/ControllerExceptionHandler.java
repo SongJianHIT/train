@@ -1,5 +1,7 @@
 package tech.songjian.train.common.handler;
 
+import cn.hutool.core.util.StrUtil;
+import io.seata.core.context.RootContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;
@@ -24,7 +26,11 @@ public class ControllerExceptionHandler {
      */
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public CommonResp exceptionHandler(Exception e) {
+    public CommonResp exceptionHandler(Exception e) throws Exception {
+        // 如果实在一次全局事务中出现异常，则不要包装返回值，而是将异常抛给调用方，以便回滚
+        if (StrUtil.isNotBlank(RootContext.getXID())) {
+            throw e;
+        }
         CommonResp commonResp = new CommonResp();
         LOG.error("系统异常：", e);
         commonResp.setSuccess(false);

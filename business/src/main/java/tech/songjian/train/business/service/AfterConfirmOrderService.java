@@ -1,5 +1,7 @@
 package tech.songjian.train.business.service;
 
+import io.seata.core.context.RootContext;
+import io.seata.spring.annotation.GlobalTransactional;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,19 +48,21 @@ public class AfterConfirmOrderService {
      *  3、为会员增加购票记录
      *  4、更新确认订单为成功
      */
-    @Transactional
-    // @GlobalTransactional
+    // @Transactional
+    @GlobalTransactional
     public void afterDoConfirm(DailyTrainTicket dailyTrainTicket,
                                List<DailyTrainSeat> finalSeatList,
                                List<ConfirmOrderTicketReq> tickets,
                                ConfirmOrder confirmOrder) {
+
+        LOG.info("Seata的全局事务id：{}", RootContext.getXID());
 
         for (int j = 0; j < finalSeatList.size(); j++) {
             DailyTrainSeat dailyTrainSeat = finalSeatList.get(j);
             DailyTrainSeat seatForUpdate = new DailyTrainSeat();
             // 1、座位表修改售卖情况sell；
             // 只更新座位售卖情况，所以创建一个新对象，只设置主键和销量
-            seatForUpdate.setId(seatForUpdate.getId());
+            seatForUpdate.setId(dailyTrainSeat.getId());
             seatForUpdate.setSell(dailyTrainSeat.getSell());
             seatForUpdate.setUpdateTime(new Date());
             dailyTrainSeatMapper.updateByPrimaryKeySelective(seatForUpdate);
@@ -113,7 +117,7 @@ public class AfterConfirmOrderService {
 
             // 调用会员服务接口，为会员增加一张车票
             MemberTicketReq memberTicketReq = new MemberTicketReq();
-            memberTicketReq.setMemberId(LoginMemberContext.getId());
+            memberTicketReq.setMemberId(confirmOrder.getId());
             memberTicketReq.setPassengerId(tickets.get(j).getPassengerId());
             memberTicketReq.setPassengerName(tickets.get(j).getPassengerName());
             memberTicketReq.setTrainDate(dailyTrainTicket.getDate());

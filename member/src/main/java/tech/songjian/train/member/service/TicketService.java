@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.seata.core.context.RootContext;
 import tech.songjian.train.common.req.MemberTicketReq;
 import tech.songjian.train.common.resp.PageResp;
 import tech.songjian.train.common.util.SnowUtil;
@@ -34,6 +35,9 @@ public class TicketService {
      * @param req
      */
     public void save(MemberTicketReq req) throws Exception {
+
+        LOG.info("Seata的全局事务id：{}", RootContext.getXID());
+
         DateTime now = DateTime.now();
         Ticket ticket = BeanUtil.copyProperties(req, Ticket.class);
         ticket.setId(SnowUtil.getSnowflakeNextId());
