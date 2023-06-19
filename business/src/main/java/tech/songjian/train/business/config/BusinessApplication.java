@@ -31,6 +31,7 @@ public class BusinessApplication {
         LOG.info("启动成功！！");
         LOG.info("测试地址: \thttp://127.0.0.1:{}{}/hello", env.getProperty("server.port"), env.getProperty("server.servlet.context-path"));
         initFlowRules();
+        LOG.info("开启限流");
     }
     private static void initFlowRules(){
         List<FlowRule> rules = new ArrayList<>();

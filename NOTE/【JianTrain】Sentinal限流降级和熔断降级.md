@@ -77,6 +77,8 @@ public void doConfirmBlock(ConfirmOrderDoReq req, BlockException e) {
 
 并修改注解：`@SentinelResource(value = "doConfirm", blockHandler = "doConfirmBlock")`
 
+![image-20230619144141892](./assets/image-20230619144141892.png)
+
 ## 控台界面
 
 ```JAVA
@@ -91,4 +93,10 @@ java -Dserver.port=18080 -jar sentinel-dashboard-1.8.6.jar
 spring.cloud.sentinel.transport.port=8719
 spring.cloud.sentinel.transport.dashboard=18080
 ```
+
+![image-20230619144920626](./assets/image-20230619144920626.png)
+
+## 流控规则持久化-Nacos
+
+### 依赖
 
