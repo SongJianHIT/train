@@ -6,6 +6,7 @@ import cn.hutool.core.util.ObjUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.seata.core.context.RootContext;
+import tech.songjian.train.common.context.LoginMemberContext;
 import tech.songjian.train.common.req.MemberTicketReq;
 import tech.songjian.train.common.resp.PageResp;
 import tech.songjian.train.common.util.SnowUtil;
@@ -50,8 +51,8 @@ public class TicketService {
         TicketExample ticketExample = new TicketExample();
         ticketExample.setOrderByClause("id desc");
         TicketExample.Criteria criteria = ticketExample.createCriteria();
-        if (ObjUtil.isNotNull(req.getMemberId())) {
-            criteria.andMemberIdEqualTo(req.getMemberId());
+        if (ObjUtil.isNotNull(LoginMemberContext.getId())) {
+            criteria.andMemberIdEqualTo(LoginMemberContext.getId());
         }
 
         LOG.info("查询页码：{}", req.getPage());

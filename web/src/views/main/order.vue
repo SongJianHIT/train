@@ -339,11 +339,10 @@ export default defineComponent({
     };
 
     const handleOk = () => {
-      // TODO: 暂时不校验，直接放行
-      // if (Tool.isEmpty(imageCode.value)) {
-      //   notification.error({description: '验证码不能为空'});
-      //   return;
-      // }
+      if (Tool.isEmpty(imageCode.value)) {
+        notification.error({description: '验证码不能为空'});
+        return;
+      }
 
       console.log("选好的座位：", chooseSeatObj.value);
 
@@ -378,17 +377,17 @@ export default defineComponent({
         start: dailyTrainTicket.start,
         end: dailyTrainTicket.end,
         tickets: tickets.value,
-        // imageCodeToken: imageCodeToken.value,
-        // imageCode: imageCode.value,
-        // lineNumber: lineNumber.value
+        imageCodeToken: imageCodeToken.value,
+        imageCode: imageCode.value,
+        lineNumber: lineNumber.value
       }).then((response) => {
         let data = response.data;
         if (data.success) {
           notification.success({description: "下单成功！"});
-          // visible.value = false;
-          // imageCodeModalVisible.value = false;
+          visible.value = false;
+          imageCodeModalVisible.value = false;
           // lineModalVisible.value = true;
-          // confirmOrderId.value = data.content;
+          confirmOrderId.value = data.content;
           // queryLineCount();
         } else {
           notification.error({description: data.message});
@@ -398,9 +397,9 @@ export default defineComponent({
 
     /* ------------------- 定时查询订单状态 --------------------- */
     // 确认订单后定时查询
-    let queryLineCountInterval;
-
-    // 定时查询订单结果/排队数量
+    // let queryLineCountInterval;
+    //
+    // // 定时查询订单结果/排队数量
     // const queryLineCount = () => {
     //   confirmOrderLineCount.value = -1;
     //   queryLineCountInterval = setInterval(function () {
@@ -482,7 +481,6 @@ export default defineComponent({
       if (parseInt(firstImageCodeTarget.value) === parseInt(firstImageCodeSourceA.value + firstImageCodeSourceB.value)) {
         // 第一层验证通过
         firstImageCodeModalVisible.value = false;
-        // 暂时不开启第二层图片验证码
         showImageCodeModal();
       } else {
         notification.error({description: '验证码错误'});
