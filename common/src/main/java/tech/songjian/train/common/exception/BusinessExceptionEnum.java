@@ -16,7 +16,8 @@ public enum BusinessExceptionEnum {
 
     CONFIRM_ORDER_TICKET_COUNT_ERROR("车票余票不足"),
     CONFIRM_ORDER_LOCK_FALL("当前抢票人数过多，请稍后重试"),
-    CONFIRM_ORDER_FLOW_EXCEPTION("请求限流！");
+    CONFIRM_ORDER_FLOW_EXCEPTION("请求限流！"),
+    CONFIRM_ORDER_SK_TOKEN_FAIL("当前抢票人数过多，请五秒后重试！");
 
     private String desc;
 

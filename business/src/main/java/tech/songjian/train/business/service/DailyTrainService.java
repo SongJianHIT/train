@@ -48,6 +48,9 @@ public class DailyTrainService {
     @Resource
     private DailyTrainTicketService dailyTrainTicketService;
 
+    @Resource
+    private SkTokenService skTokenService;
+
     /**
      * 新增每日车次
      * @param req
@@ -162,6 +165,9 @@ public class DailyTrainService {
 
         // 生成该车次的余票数据
         dailyTrainTicketService.genDaily(dailyTrain, date, train.getCode());
+
+        // 生成该车次的令牌
+        skTokenService.genDaily(date, train.getCode());
 
         LOG.info("生成日期【{}】车次【{}】的信息结束", DateUtil.formatDate(date), train.getCode());
     }
