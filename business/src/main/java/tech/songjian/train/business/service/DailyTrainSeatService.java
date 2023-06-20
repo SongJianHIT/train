@@ -138,6 +138,10 @@ public class DailyTrainSeatService {
         return (int) l;
     }
 
+    public int countSeat(Date date, String trainCode) {
+        return countSeat(date, trainCode, null);
+    }
+
     /**
      * 根据日期，火车号，车厢好获取座位列表
      * @param date
